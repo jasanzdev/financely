@@ -1,0 +1,26 @@
+services:
+    mysql-db:
+        container_name: mysql
+        image: mysql:9.4.0-oraclelinux9
+        restart: always
+        ports:
+            - "3307:3306"
+        volumes:
+            -   mysql:/var/lib/mysql
+        environment:
+            MYSQL_HOST: 0.0.0.0
+            MYSQL_ROOT_PASSWORD: Jasanz5474
+
+    phpmyadmin:
+        container_name: phpmyadmin
+        image: phpmyadmin:latest
+        restart: always
+        ports:
+            -   "82:80"
+        depends_on:
+            -   mysql-db
+        links:
+            -   mysql-db:db
+volumes:
+    mysql:
+        driver: "local"
