@@ -36,15 +36,31 @@ jobs:
         run: |
           mkdir deploy
            rsync -av --progress \
-           app bootstrap config database public resources routes vendor \
-           deploy/ --exclude=node_modules --exclude=tests
+           app bootstrap config database public resources routes \
+           deploy/ --exclude=node_modules --exclude=vendor --exclude=tests
 
 
-      - name: Deploy to Hostinger
+      - name: Deploy to Hostinger via SFTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
+          server: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          protocol: sftp
+          port: 22
           local-dir: ./deploy/
-          server-dir: /public_html/
+          server-dir: /domains/personal-financely.es/public_html/
+
+      - name: Run Composer and optimize on server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
+            cd /domains/personal-financely.es/public_html/
+            composer2 install --no-dev --optimize-autoloader
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
