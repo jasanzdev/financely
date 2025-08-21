@@ -1,6 +1,5 @@
 /.phpunit.cache
 /node_modules
-/public/hot
 /public/storage
 /storage/*.key
 /storage/pail
@@ -8,6 +7,7 @@
 .env
 .env.backup
 .env.production
+.editorconfig
 .phpactor.json
 .phpunit.result.cache
 Homestead.json
