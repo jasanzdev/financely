@@ -1,0 +1,50 @@
+name: Deploy Laravel to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: mbstring, bcmath, intl
+
+      - name: Install Composer deps
+        run: composer install --no-dev --prefer-dist --optimize-autoloader
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install NPM deps & build
+        run: |
+          npm install
+          npm run build
+
+      - name: Prepare deployment
+        run: |
+          mkdir deploy
+           rsync -av --progress \
+           app bootstrap config database public resources routes vendor \
+           deploy/ --exclude=node_modules --exclude=tests
+
+
+      - name: Deploy to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./deploy/
+          server-dir: /public_html/
