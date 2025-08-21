@@ -1,11 +1,23 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-CMPbI4oK.css",
+    "file": "assets/app-D3BgmOrJ.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "names": [
       "app.css"
     ]
+  },
+  "resources/images/logo.png": {
+    "file": "assets/logo-ChYTexnv.png",
+    "src": "resources/images/logo.png"
+  },
+  "resources/images/man-calculating-finance.webp": {
+    "file": "assets/man-calculating-finance-DSsW4C7K.webp",
+    "src": "resources/images/man-calculating-finance.webp"
+  },
+  "resources/images/man-plan-work-growth-workplace.webp": {
+    "file": "assets/man-plan-work-growth-workplace-Cad1CzCy.webp",
+    "src": "resources/images/man-plan-work-growth-workplace.webp"
   },
   "resources/js/app.js": {
     "file": "assets/app-Dy4fMCdX.js",
