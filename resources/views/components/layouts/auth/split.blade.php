@@ -8,7 +8,7 @@
     <div
         class="bg-muted relative hidden h-full flex-col p-10 text-white lg:flex dark:border-e dark:border-neutral-800">
         <div class="absolute inset-0 bg-neutral-900">
-            <img src="{{ Vite::asset('public/images/man-calculating-finance.webp') }}"
+            <img src="{{ Vite::asset('resources/images/man-calculating-finance.webp') }}"
                  alt="Man reviewing financial documents with a magnifying glass and calculator on a desk"
                  loading="lazy"
                  class="w-[770px] h-full object-cover"

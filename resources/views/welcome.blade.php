@@ -1801,7 +1801,7 @@
         <div
             class="flex flex-col lg:flex-row gap-3 leading-[20px] p-6 bg-white dark:bg-[#161615] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d] rounded-es-lg rounded-ee-lg lg:rounded-ss-lg lg:rounded-ee-none">
             <div class="relative w-full lg:w-1/2">
-                <img src="{{ Vite::asset('resource/images/man-plan-work-growth-workplace.webp') }}"
+                <img src="{{ Vite::asset('resources/images/man-plan-work-growth-workplace.webp') }}"
                      alt="Woman working on a plan in an office environment, focused on career growth and success"
                      loading="lazy"
                      class="w-full h-auto object-cover rounded-lg"
