@@ -48,7 +48,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           TARGET: /domains/personal-financely.es/public_html/
           SOURCE: ./deploy/
-          SCRIPT: |
+          SCRIPT_AFTER: |
             cd /domains/personal-financely.es/public_html/
             composer2 install --no-dev --optimize-autoloader
             php artisan config:cache
