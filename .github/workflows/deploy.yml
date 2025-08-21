@@ -40,25 +40,15 @@ jobs:
            deploy/ --exclude=node_modules --exclude=vendor --exclude=tests
 
 
-      - name: Deploy to Hostinger via SFTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy via SSH Key
+        uses: easingthemes/ssh-deploy@v4
         with:
-          server: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          protocol: sftp
-          port: 22
-          local-dir: ./deploy/
-          server-dir: /domains/personal-financely.es/public_html/
-
-      - name: Run Composer and optimize on server
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: |
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          TARGET: /domains/personal-financely.es/public_html/
+          SOURCE: ./deploy/
+          SCRIPT: |
             cd /domains/personal-financely.es/public_html/
             composer2 install --no-dev --optimize-autoloader
             php artisan config:cache
