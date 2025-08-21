@@ -5,7 +5,7 @@ return [
     'manifest' => [
         'name' => env('APP_NAME', 'Control Financiero'),
         'short_name' => 'Financely',
-        'start_url' => 'https://personal-financely.es/',
+        'start_url' => '/',
         'background_color' => '#ffffff',
         'theme_color' => '#000000',
         'display' => 'standalone',
