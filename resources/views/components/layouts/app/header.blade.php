@@ -20,7 +20,7 @@
         </flux:navbar.item>
         <flux:navlist.item icon="wallet" :href="route('transaction.filters')"
                            :current="request()->routeIs('transaction*')"
-                           wire:navigate.prevent>
+                           wire:navigate>
             {{ __('Transactions') }}
         </flux:navlist.item>
     </flux:navbar>
@@ -91,7 +91,7 @@
             </flux:navlist.item>
             <flux:navlist.item icon="wallet" :href="route('transaction.filters')"
                                :current="request()->routeIs('transaction*')"
-                               wire:navigate.prevent>
+                               wire:navigate>
                 {{ __('Transactions') }}
             </flux:navlist.item>
         </flux:navlist.group>

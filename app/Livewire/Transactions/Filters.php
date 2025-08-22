@@ -19,8 +19,8 @@ class Filters extends Component
 
     public Collection $categories;
     public string|null $selectedCategory = null;
-    public float $incomes;
-    public float $expenses;
+    public float $incomes = 0;
+    public float $expenses = 0;
 
     public string $showType = 'all';
 
@@ -70,7 +70,7 @@ class Filters extends Component
     public function render(): View
     {
         $query = Transaction::where('user_id', auth()->id());
-
+        
         $query = match ($this->selectedTab) {
             'days' => $query->where('date', '>=', now()
                 ->subDays(7)),
@@ -90,7 +90,7 @@ class Filters extends Component
 
         $this->expenses = (clone $query)->where('type', 'expense')->sum('amount');
         $this->incomes = (clone $query)->where('type', 'income')->sum('amount');
-
+        
         $transactions = $query
             ->orderBy('date', 'desc')
             ->orderBy('updated_at', 'desc')
