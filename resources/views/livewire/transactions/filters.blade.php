@@ -40,6 +40,7 @@
         <div class="flex justify-between items-center md:px-4">
             <div x-show="selectedTab !== 'historical'"
                  class="flex w-full flex-col sm:flex-row md:gap-4 sm:gap-6">
+                
                 <x-app.stats-filter-bar :incomes="$incomes" :expenses="$expenses" :categories="$categories"/>
             </div>
         </div>

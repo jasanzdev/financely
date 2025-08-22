@@ -19,8 +19,8 @@ class Filters extends Component
 
     public Collection $categories;
     public string|null $selectedCategory = null;
-    public float $incomes = 0;
-    public float $expenses = 0;
+    public float $incomes;
+    public float $expenses;
 
     public string $showType = 'all';
 
@@ -70,7 +70,7 @@ class Filters extends Component
     public function render(): View
     {
         $query = Transaction::where('user_id', auth()->id());
-        
+
         $query = match ($this->selectedTab) {
             'days' => $query->where('date', '>=', now()
                 ->subDays(7)),
@@ -88,13 +88,13 @@ class Filters extends Component
         if ($this->showType !== 'all')
             $query->where('type', $this->showType);
 
+        $this->expenses = (clone $query)->where('type', 'expense')->sum('amount');
+        $this->incomes = (clone $query)->where('type', 'income')->sum('amount');
+
         $transactions = $query
             ->orderBy('date', 'desc')
             ->orderBy('updated_at', 'desc')
             ->paginate(10);
-
-        $this->incomes = $query->where('type', 'income')->sum('amount');
-        $this->expenses = $query->where('type', 'expense')->sum('amount');
 
         return view('livewire.transactions.filters', compact('transactions'));
     }
