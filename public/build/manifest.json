@@ -7,81 +7,9 @@
       "app.css"
     ]
   },
-  "resources/images/icons/icon-128x128.png": {
-    "file": "assets/icon-128x128-CSmbowdc.png",
-    "src": "resources/images/icons/icon-128x128.png"
-  },
-  "resources/images/icons/icon-144x144.png": {
-    "file": "assets/icon-144x144-BaqHtVCX.png",
-    "src": "resources/images/icons/icon-144x144.png"
-  },
-  "resources/images/icons/icon-152x152.png": {
-    "file": "assets/icon-152x152-1nyPiWc0.png",
-    "src": "resources/images/icons/icon-152x152.png"
-  },
-  "resources/images/icons/icon-192x192.png": {
-    "file": "assets/icon-192x192-DZTeNB01.png",
-    "src": "resources/images/icons/icon-192x192.png"
-  },
-  "resources/images/icons/icon-384x384.png": {
-    "file": "assets/icon-384x384-HcBC9APF.png",
-    "src": "resources/images/icons/icon-384x384.png"
-  },
-  "resources/images/icons/icon-512x512.png": {
-    "file": "assets/logo-ChYTexnv.png",
-    "src": "resources/images/icons/icon-512x512.png"
-  },
-  "resources/images/icons/icon-72x72.png": {
-    "file": "assets/icon-72x72-CFp6Tz-g.png",
-    "src": "resources/images/icons/icon-72x72.png"
-  },
-  "resources/images/icons/icon-96x96.png": {
-    "file": "assets/icon-96x96-CnVUX2PE.png",
-    "src": "resources/images/icons/icon-96x96.png"
-  },
-  "resources/images/icons/splash-1125x2436.png": {
-    "file": "assets/splash-1125x2436-DgtGy-Jj.png",
-    "src": "resources/images/icons/splash-1125x2436.png"
-  },
-  "resources/images/icons/splash-1242x2208.png": {
-    "file": "assets/splash-1242x2208-CzMvOvR_.png",
-    "src": "resources/images/icons/splash-1242x2208.png"
-  },
-  "resources/images/icons/splash-1242x2688.png": {
-    "file": "assets/splash-1242x2688-CC_WaGHz.png",
-    "src": "resources/images/icons/splash-1242x2688.png"
-  },
-  "resources/images/icons/splash-1536x2048.png": {
-    "file": "assets/splash-1536x2048-Cta9KOI9.png",
-    "src": "resources/images/icons/splash-1536x2048.png"
-  },
-  "resources/images/icons/splash-1668x2224.png": {
-    "file": "assets/splash-1668x2224-DH0onNQl.png",
-    "src": "resources/images/icons/splash-1668x2224.png"
-  },
-  "resources/images/icons/splash-1668x2388.png": {
-    "file": "assets/splash-1668x2388-OXjjnlTX.png",
-    "src": "resources/images/icons/splash-1668x2388.png"
-  },
-  "resources/images/icons/splash-2048x2732.png": {
-    "file": "assets/splash-2048x2732-DYJ1SPo_.png",
-    "src": "resources/images/icons/splash-2048x2732.png"
-  },
-  "resources/images/icons/splash-640x1136.png": {
-    "file": "assets/splash-640x1136-DUmLzVWr.png",
-    "src": "resources/images/icons/splash-640x1136.png"
-  },
-  "resources/images/icons/splash-750x1334.png": {
-    "file": "assets/splash-750x1334-DeyQg75x.png",
-    "src": "resources/images/icons/splash-750x1334.png"
-  },
-  "resources/images/icons/splash-828x1792.png": {
-    "file": "assets/splash-828x1792-tkDP-ehb.png",
-    "src": "resources/images/icons/splash-828x1792.png"
-  },
   "resources/images/logo.png": {
     "file": "assets/logo-ChYTexnv.png",
-    "src": "resources/images/icons/icon-512x512.png"
+    "src": "resources/images/logo.png"
   },
   "resources/images/man-calculating-finance.webp": {
     "file": "assets/man-calculating-finance-DSsW4C7K.webp",

@@ -54,7 +54,7 @@
                             {{ $transaction->type === 'income' ? '+' : '-' }} ${{ number_format($transaction->amount, 2, ',', '.') }}</span>
                 </div>
                 <button wire:click.prevent="delete('{{ $transaction->id }}')"
-                        wire:confirm.prompt="Estás seguro que desea eliminar la transacción?\n\nEscribe ELIMINAR para confirmar|ELIMINAR"
+                        wire:confirm="Estás seguro que desea eliminar la transacción?"
                         class="p-1 sm:p-2 text-white bg-red-500 hover:bg-red-600 rounded cursor-pointer transition-colors duration-200"
                         type="button"
                         aria-label="Delete transaction">

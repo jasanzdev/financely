@@ -9,14 +9,14 @@
         @if($incomes > 0)
             <div
                 class="flex justify-center gap-3 px-3 py-2 rounded-lg shadow shadow-neutral-300 dark:shadow-neutral-700 font-serif text-sm sm:text-base md:text-lg w-full sm:w-auto line-clamp-1">
-                <span class="hidden sm:inline">Ingresos: </span>
+                <span class="hidden sm:flex">Ingresos: </span>
                 <p class="text-success">{{ $incomes }}</p>
             </div>
         @endif
         @if($expenses > 0)
             <div
                 class="flex justify-center gap-3 px-3 py-2 rounded-lg shadow shadow-neutral-300 dark:shadow-neutral-700 font-serif text-sm sm:text-base md:text-lg w-full sm:w-auto line-clamp-1">
-                <span class="hidden sm:inline">Gastos: </span>
+                <span class="hidden sm:flex">Gastos: </span>
                 <p class="text-danger">{{ $expenses }}</p>
             </div>
         @endif
