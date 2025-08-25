@@ -11,8 +11,8 @@
         <div
             class="flex items-center justify-between border-b border-outline bg-surface-alt/60 p-4 dark:border-outline-dark dark:bg-surface-dark/20">
             <h3 id="defaultModalTitle"
-                class="font-semibold tracking-wide text-on-surface-strong dark:text-on-surface-dark-strong">Create
-                Category</h3>
+                class="font-semibold tracking-wide text-on-surface-strong dark:text-on-surface-dark-strong">Crear
+                Categoría</h3>
             <button x-on:click="modalIsOpen = false" aria-label="close modal">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" stroke="currentColor"
                      fill="none" stroke-width="1.4" class="w-5 h-5">
@@ -23,7 +23,7 @@
         <!-- Dialog Body -->
         <div class="flex flex-col gap-4 px-4 py-8 w-80">
             <div class="flex w-full max-w-xs flex-col gap-1 text-on-surface dark:text-on-surface-dark">
-                <label for="textInputDefault" class="w-fit pl-0.5 text-sm">Category Name*</label>
+                <label for="textInputDefault" class="w-fit pl-0.5 text-sm">Categoría*</label>
                 <input id="textInputDefault" type="text"
                        class="w-full rounded-radius border border-outline bg-surface-alt px-2 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 dark:border-outline-dark dark:bg-surface-dark-alt/50 dark:focus-visible:outline-primary-dark"
                        wire:model="form.category" placeholder="Food, Monthly Bills, Tobacco, Business ..."
@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="flex w-full max-w-md flex-col gap-1 text-on-surface dark:text-on-surface-dark">
-                <label for="textArea" class="w-fit pl-0.5 text-sm">Description</label>
+                <label for="textArea" class="w-fit pl-0.5 text-sm">Descripción</label>
                 <textarea id="textArea" wire:model="form.description"
                           class="w-full rounded-radius border border-outline bg-surface-alt px-2.5 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 dark:border-outline-dark dark:bg-surface-dark-alt/50 dark:focus-visible:outline-primary-dark"
                           rows="3" placeholder="Purchase of cigarettes, earnings of business ..."></textarea>
@@ -47,9 +47,8 @@
             class="flex flex-col-reverse justify-between gap-2 border-t border-outline bg-surface-alt/60 p-4 dark:border-outline-dark dark:bg-surface-dark/20 sm:flex-row sm:items-center md:justify-end">
             <button type="button" wire:click="save"
                     class="whitespace-nowrap rounded-radius border border-primary dark:border-primary-dark bg-primary px-4 py-2 text-center text-sm font-medium tracking-wide text-on-primary transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:opacity-100 active:outline-offset-0 dark:bg-primary-dark dark:text-on-primary-dark dark:focus-visible:outline-primary-dark">
-                Add
+                Crear
             </button>
         </div>
     </div>
 </div>
-

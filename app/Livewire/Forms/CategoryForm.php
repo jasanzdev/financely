@@ -8,9 +8,11 @@ use Livewire\Form;
 
 class CategoryForm extends Form
 {
-    public string $category = '';
+    public ?Category $categorySelected = null;
 
-    public string $description = '';
+    public string|null $category = '';
+
+    public string|null $description = '';
 
     public function rules(): array
     {
@@ -21,6 +23,7 @@ class CategoryForm extends Form
                 'min:3',
                 Rule::unique('categories', 'category')
                     ->where('user_id', auth()->id())
+                    ->ignore($this->categorySelected?->id),
             ],
             'description' => [
                 'nullable',
@@ -31,10 +34,23 @@ class CategoryForm extends Form
         ];
     }
 
+    public function setCategory(Category $category): void
+    {
+        $this->categorySelected = $category;
+        $this->category = $category->category;
+        $this->description = $category->description;
+    }
+
     public function store()
     {
         $validated = $this->validate();
         $validated['user_id'] = auth()->id();
         Category::create($validated);
+    }
+
+    public function update()
+    {
+        $this->validate();
+        $this->categorySelected->update($this->all());
     }
 }

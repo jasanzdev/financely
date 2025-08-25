@@ -1,5 +1,7 @@
 <?php
 
+use App\Livewire\Category\CategoryEdit;
+use App\Livewire\Category\CategoryIndex;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -15,8 +17,6 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::get('transaction/{transaction}/update', Update::class)->name('transaction.update');
-Route::get('transaction', Filters::class)->name('transaction.filters');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -24,6 +24,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+
+    Route::get('transaction/{transaction}/edit', Update::class)->name('transaction.edit');
+    Route::get('transaction', Filters::class)->name('transaction.filters');
+
+    Route::get('category', CategoryIndex::class)->name('category.index');
+    Route::get('category/{category}/edit', CategoryEdit::class)->name('category.edit');
 });
 
 require __DIR__ . '/auth.php';

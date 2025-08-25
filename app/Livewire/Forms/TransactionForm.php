@@ -48,9 +48,4 @@ class TransactionForm extends Form
         $this->validate();
         $this->transaction->update($this->all());
     }
-
-    public function remove()
-    {
-
-    }
 }

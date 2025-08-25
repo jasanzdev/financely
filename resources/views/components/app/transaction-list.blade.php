@@ -5,7 +5,7 @@
 <ul class="space-y-3 mt-3 sm:mt-4">
     @forelse($transactions as $transaction)
         <li class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 rounded-lg bg-surface-alt shadow-sm border dark:border-neutral-700 dark:bg-surface-dark-alt/50 hover:shadow-md dark:hover:shadow-neutral-300 transition-shadow duration-200">
-            <a href="{{ route('transaction.update', [$transaction, 'from' => url()->current()]) }}"
+            <a href="{{ route('transaction.edit', [$transaction, 'from' => url()->current()]) }}"
                wire:navigate
                class="flex flex-col sm:flex-row items-start sm:items-center flex-1"
             >
