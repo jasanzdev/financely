@@ -19,6 +19,11 @@ class TransactionForm extends Form
     #[Validate('required|string|max:255')]
     public $description;
 
+    public $state = true;
+
+    #[Validate('nullable|after:today')]
+    public $expected_payment_date;
+
     #[Validate('required|exists:categories,id')]
     public $category_id;
 
@@ -32,20 +37,26 @@ class TransactionForm extends Form
         $this->type = $transaction->type;
         $this->amount = $transaction->amount;
         $this->description = $transaction->description;
+        $this->state = $transaction->state;
+        $this->expected_payment_date = $transaction->expected_payment_date;
         $this->date = $transaction->date;
         $this->category_id = $transaction->category->id;
+        $this->state = $transaction->state === 'paid' ? true : false;
+        $this->expected_payment_date = $transaction->expected_payment_date;
     }
 
     public function store()
     {
         $validated = $this->validate();
         $validated['user_id'] = auth()->id();
+        $validated['state'] = $this->state ? 'paid' : 'pending';
         Transaction::create($validated);
     }
 
     public function update()
     {
-        $this->validate();
-        $this->transaction->update($this->all());
+        $validated = $this->validate();
+        $validated['state'] = $this->state ? 'paid' : 'pending';
+        $this->transaction->update($validated);
     }
 }

@@ -13,7 +13,7 @@ class Transaction extends Model
 {
     use HasUuids, SoftDeletes;
 
-    protected $fillable = ['type', 'amount', 'description', 'date', 'user_id', 'category_id'];
+    protected $fillable = ['type', 'amount', 'description', 'state', 'expected_payment_date', 'date', 'user_id', 'category_id'];
 
     protected $casts = [
         'amount' => 'decimal:2',
@@ -36,4 +36,10 @@ class Transaction extends Model
         );
     }
 
+    protected function expectedPaymentDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => Carbon::parse($value)->format('y-m-d'),
+        );
+    }
 }

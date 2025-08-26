@@ -43,6 +43,59 @@
                     </div>
                 </div>
                 <div>
+                    <label for="defaultToggle" class="inline-flex items-center gap-3">
+                        <input id="defaultToggle" type="checkbox" class="peer sr-only" role="switch"
+                               wire:model.live="form.state"
+                               checked/>
+                        <span
+                            class="trancking-wide text-sm font-medium text-on-surface peer-checked:text-on-surface-strong peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-on-surface-dark dark:peer-checked:text-on-surface-dark-strong">
+                            Pagado
+                        </span>
+                        <div
+                            class="relative h-6 w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-surface-alt after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-on-surface after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:bg-on-primary peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-primary peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:border-outline-dark dark:bg-surface-dark-alt dark:after:bg-on-surface-dark dark:peer-checked:bg-primary-dark dark:peer-checked:after:bg-on-primary-dark dark:peer-focus:outline-outline-dark-strong dark:peer-focus:peer-checked:outline-primary-dark"
+                            aria-hidden="true"></div>
+                    </label>
+
+                    <div>
+                        @error('form.state') <span class="error">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+                <div class="mt-6" x-data="{ form: { state: @entangle('form.state').live } }" x-show="!form.state">
+                    <label for="datepicker"
+                           class="block mb-2 font-medium text-gray-700 dark:text-gray-200">Fecha de pago*</label>
+                    <div class="custom-datepicker relative w-full">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-700 dark:text-gray-200" aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                            </svg>
+                        </div>
+
+                        <div
+                            wire:ignore
+                            x-data
+                            x-init="
+                                flatpickr($refs.datePick, {
+                                dateFormat: 'Y-m-d',
+                                defaultDate: @entangle('form.expected_payment_date').defer
+                                });
+                            "
+                        >
+                            <input
+                                x-ref="datePick"
+                                type="text"
+                                wire:model="form.expected_payment_date"
+                                placeholder="Selecciona la fecha"
+                                class="w-full text-gray-700 dark:text-gray-200 rounded-radius border border-outline bg-surface-alt px-9 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 dark:border-outline-dark dark:bg-surface-dark-alt/50 dark:focus-visible:outline-primary-dark"
+                            >
+                        </div>
+                    </div>
+                    <div>
+                        @error('form.expected_payment_date') <span class="error">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+                <div>
                     <label for="amount" class="w-fit pl-0.5 text-sm">Monto*</label>
                     <div
                         class="relative flex w-full mt-2 max-w-xs flex-col gap-1 text-on-surface dark:text-on-surface-dark">
