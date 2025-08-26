@@ -28,6 +28,11 @@
                            wire:navigate>
             {{ __('Categorías') }}
         </flux:navlist.item>
+        <flux:navlist.item icon="arrow-path" :href="route('pending-transactions')"
+                           :current="request()->routeIs('pending-transactions')"
+                           wire:navigate>
+            {{ __('Pendientes') }}
+        </flux:navlist.item>
     </flux:navbar>
 
     <flux:spacer/>
@@ -103,6 +108,11 @@
                                :current="request()->routeIs('category*')"
                                wire:navigate>
                 {{ __('Categorías') }}
+            </flux:navlist.item>
+            <flux:navlist.item icon="arrow-path" :href="route('pending-transactions')"
+                               :current="request()->routeIs('pending-transactions')"
+                               wire:navigate>
+                {{ __('Pendientes') }}
             </flux:navlist.item>
         </flux:navlist.group>
     </flux:navlist>

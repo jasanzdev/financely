@@ -14,6 +14,7 @@ class Index extends Component
         $user = auth()->id();
         $this->transactions = Transaction::take(7)
             ->where('user_id', $user)
+            ->where('state', 'paid')
             ->orderBy('date', 'desc')
             ->orderBy('created_at', 'desc')
             ->get();

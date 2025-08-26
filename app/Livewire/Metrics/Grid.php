@@ -18,10 +18,15 @@ class Grid extends Component
         $transactions = Transaction::where('user_id', auth()->id())
             ->whereMonth('date', now()->month)
             ->whereYear('date', now()->year)
+            ->where('state', 'paid')
             ->get();
 
-        $this->total_income = $transactions->where('type', 'income')->sum('amount');
-        $this->total_expense = $transactions->where('type', 'expense')->sum('amount');
+        $this->total_income = (clone $transactions)
+            ->where('type', 'income')
+            ->sum('amount');
+        $this->total_expense = (clone $transactions)
+            ->where('type', 'expense')
+            ->sum('amount');
         $this->total_transactions = count($transactions);
     }
 

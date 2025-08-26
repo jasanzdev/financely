@@ -69,8 +69,8 @@ class Filters extends Component
 
     public function render(): View
     {
-        $query = Transaction::where('user_id', auth()->id());
-        
+        $query = Transaction::where('user_id', auth()->id())->where('state', 'paid');
+
         $query = match ($this->selectedTab) {
             'days' => $query->where('date', '>=', now()
                 ->subDays(7)),
@@ -90,7 +90,7 @@ class Filters extends Component
 
         $this->expenses = (clone $query)->where('type', 'expense')->sum('amount');
         $this->incomes = (clone $query)->where('type', 'income')->sum('amount');
-        
+
         $transactions = $query
             ->orderBy('date', 'desc')
             ->orderBy('updated_at', 'desc')

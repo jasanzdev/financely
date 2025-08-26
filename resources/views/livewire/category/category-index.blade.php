@@ -47,7 +47,7 @@
                         </div>
 
                         <!-- Actions -->
-                        <div class="flex items-center gap-3 w-full sm:w-auto mt-3 sm:mt-0">
+                        <div class="flex justify-end items-center gap-3 w-full sm:w-auto mt-3 sm:mt-0">
                             <a
                                 href="{{ route('category.edit', $category) }}" wire:navigate
                                 class="p-2 rounded-lg border border-neutral-300 dark:border-neutral-600 shadow-lg hover:bg-neutral-200 dark:hover:bg-neutral-700"
