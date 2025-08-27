@@ -118,18 +118,20 @@
                                     @endif
                                 </div>
 
-                                <div class="flex flex-col w-full">
-                                    <div class="flex items-center gap-2">
-                                        <p class="text-sm sm:text-base font-medium text-on-surface dark:text-on-surface-dark line-clamp-2">
-                                            {{ $transaction->description }}
-                                        </p>
-                                        <span
-                                            class="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-full">
-                                    {{ $transaction->category->category }}
-                                </span>
-                                    </div>
-                                    <div class="mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                                        <p>Fecha de pago -> {{$transaction->expected_payment_date}}</p>
+                                <div class="flex-1">
+                                    <p class="text-base sm:text-lg font-medium text-on-surface dark:text-on-surface-dark line-clamp-2">
+                                        {{ $transaction->description }}
+                                    </p>
+
+                                    <div class="flex flex-wrap items-center gap-3 mt-1">
+                            <span
+                                class="bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-full px-2 py-0.5 text-xs">
+                                {{ $transaction->category->category }}
+                            </span>
+
+                                        <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                                Fecha de pago -> {{$transaction->expected_payment_date}}
+                            </span>
                                     </div>
                                 </div>
                             </div>
@@ -141,15 +143,15 @@
                                 class="text-sm sm:text-base font-semibold {{ $transaction->type === 'income' ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
                                 <span>{{ $transaction->type === 'income' ? '+' : '-' }} ${{ number_format($transaction->amount, 2, ',', '.') }}</span>
                             </div>
-                            <label for="defaultToggle" class="inline-flex items-center gap-3">
-                                <input id="defaultToggle" type="checkbox" class="peer sr-only" role="switch"
+                            <label for="pendingToggle" class="inline-flex items-center gap-3">
+                                <input id="pendingToggle" type="checkbox" class="peer sr-only" role="switch"
                                        wire:click.prevent="changeStatus('{{ $transaction->id }}')"
                                        wire:confirm="Desea marcar como pagada esta transacción?"
                                 />
                                 <span
                                     class="trancking-wide text-sm font-medium text-on-surface peer-checked:text-on-surface-strong peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-on-surface-dark dark:peer-checked:text-on-surface-dark-strong">
-                            Pagar
-                        </span>
+                                    {{ $transaction->type === 'income' ? 'Cobrar' : 'Pagar' }}
+                                </span>
                                 <div
                                     class="relative h-6 w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-surface-alt after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-on-surface after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:bg-on-primary peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-primary peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:border-outline-dark dark:bg-surface-dark-alt dark:after:bg-on-surface-dark dark:peer-checked:bg-primary-dark dark:peer-checked:after:bg-on-primary-dark dark:peer-focus:outline-outline-dark-strong dark:peer-focus:peer-checked:outline-primary-dark"
                                     aria-hidden="true"></div>

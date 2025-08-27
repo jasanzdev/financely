@@ -7,8 +7,8 @@
     'iconColor' => 'text-green-700',
 ])
 
-<div
-    class="relative h-full w-full rounded-xl border border-neutral-200 dark:border-neutral-700 shadow-lg overflow-hidden">
+<div {{ $attributes }}
+     class="relative h-full w-full rounded-xl border border-neutral-200 dark:border-neutral-700 shadow-lg hover:shadow-xs dark:hover:shadow-neutral-600 transition-shadow duration-200 overflow-hidden hover:scale-95">
     <div class="flex flex-col h-full p-4 md:p-5">
         <div class="flex justify-between items-start mb-2 md:mb-3">
             <h1 class="font-serif text-base md:text-lg lg:text-xl dark:text-neutral-100 line-clamp-1">{{ $title }}</h1>

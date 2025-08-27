@@ -23,15 +23,15 @@
                            wire:navigate>
             {{ __('Transacciones') }}
         </flux:navlist.item>
-        <flux:navlist.item icon="banknotes" :href="route('category.index')"
-                           :current="request()->routeIs('category*')"
-                           wire:navigate>
-            {{ __('Categorías') }}
-        </flux:navlist.item>
         <flux:navlist.item icon="arrow-path" :href="route('pending-transactions')"
                            :current="request()->routeIs('pending-transactions')"
                            wire:navigate>
             {{ __('Pendientes') }}
+        </flux:navlist.item>
+        <flux:navlist.item icon="banknotes" :href="route('category.index')"
+                           :current="request()->routeIs('category*')"
+                           wire:navigate>
+            {{ __('Categorías') }}
         </flux:navlist.item>
     </flux:navbar>
 
@@ -104,15 +104,15 @@
                                wire:navigate>
                 {{ __('Transacciones') }}
             </flux:navlist.item>
-            <flux:navlist.item icon="banknotes" :href="route('category.index')"
-                               :current="request()->routeIs('category*')"
-                               wire:navigate>
-                {{ __('Categorías') }}
-            </flux:navlist.item>
             <flux:navlist.item icon="arrow-path" :href="route('pending-transactions')"
                                :current="request()->routeIs('pending-transactions')"
                                wire:navigate>
                 {{ __('Pendientes') }}
+            </flux:navlist.item>
+            <flux:navlist.item icon="banknotes" :href="route('category.index')"
+                               :current="request()->routeIs('category*')"
+                               wire:navigate>
+                {{ __('Categorías') }}
             </flux:navlist.item>
         </flux:navlist.group>
     </flux:navlist>

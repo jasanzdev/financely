@@ -43,8 +43,8 @@
                     </div>
                 </div>
                 <div>
-                    <label for="defaultToggle" class="inline-flex items-center gap-3">
-                        <input id="defaultToggle" type="checkbox" class="peer sr-only" role="switch"
+                    <label for="createToggle" class="inline-flex items-center gap-3">
+                        <input id="createToggle" type="checkbox" class="peer sr-only" role="switch"
                                wire:model.live="form.state"
                                checked/>
                         <span

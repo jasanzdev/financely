@@ -5,12 +5,11 @@
 <ul class="space-y-3 mt-3 sm:mt-4">
     @forelse($transactions as $transaction)
         <li class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 rounded-lg bg-surface-alt shadow-sm border dark:border-neutral-700 dark:bg-surface-dark-alt/50 hover:shadow-md dark:hover:shadow-neutral-300 transition-shadow duration-200">
-            <a href="{{ route('transaction.edit', [$transaction, 'from' => url()->current()]) }}"
+            <a href="{{ route('transaction.edit', [$transaction]) }}"
                wire:navigate
                class="flex flex-col sm:flex-row items-start sm:items-center flex-1"
             >
                 <div class="flex items-center w-full sm:w-auto mb-3 sm:mb-0">
-
                     <div
                         class="rounded-full p-2 mr-3 {{ $transaction->type === 'income' ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30' }}">
                         @if($transaction->type === 'income')
@@ -35,7 +34,7 @@
                             {{ $transaction->description }}
                         </p>
 
-                        <div class="flex flex-wrap items-center gap-2 mt-1">
+                        <div class="flex flex-wrap items-center gap-3 mt-1">
                             <span
                                 class="bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-full px-2 py-0.5 text-xs">
                                 {{ $transaction->category->category }}

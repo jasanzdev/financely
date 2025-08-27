@@ -10,28 +10,61 @@ class Grid extends Component
 {
     public $total_income;
     public $total_expense;
+    public $receivable_transactions;
+    public $payable_transactions;
 
-    public $total_transactions;
+    public $modalIsOpen = false;
+    public $modalType = null;
 
-    public function mount(): void
+
+    public function openModal($type)
     {
-        $transactions = Transaction::where('user_id', auth()->id())
-            ->whereMonth('date', now()->month)
-            ->whereYear('date', now()->year)
-            ->where('state', 'paid')
-            ->get();
+        $this->modalType = $type;
+        $this->modalIsOpen = true;
+    }
 
-        $this->total_income = (clone $transactions)
-            ->where('type', 'income')
-            ->sum('amount');
-        $this->total_expense = (clone $transactions)
-            ->where('type', 'expense')
-            ->sum('amount');
-        $this->total_transactions = count($transactions);
+    public function closeModal()
+    {
+        $this->modalIsOpen = false;
+        $this->modalType = null;
+    }
+
+    public function changeStatus(Transaction $transaction)
+    {
+        $transaction->update(['state' => 'paid', 'expected_payment_date' => now()]);
+        $this->modalIsOpen = true;
     }
 
     public function render(): View
     {
+        $transactions = Transaction::where('user_id', auth()->id());
+
+        $pending_transactions = (clone $transactions)
+            ->where('state', 'pending');
+
+        $this->receivable_transactions = (clone $pending_transactions)
+            ->where('type', 'income')
+            ->orderBy('expected_payment_date')
+            ->get();
+
+        $this->payable_transactions = (clone $pending_transactions)
+            ->where('type', 'expense')
+            ->orderBy('expected_payment_date')
+            ->get();
+
+        $paid_transactions = (clone $transactions)
+            ->where('state', 'paid')
+            ->whereMonth('date', now()->month)
+            ->whereYear('date', now()->year);
+
+        $this->total_income = (clone $paid_transactions)
+            ->where('type', 'income')
+            ->sum('amount');
+
+        $this->total_expense = (clone $paid_transactions)
+            ->where('type', 'expense')
+            ->sum('amount');
+
         return view('livewire.metrics.grid');
     }
 }

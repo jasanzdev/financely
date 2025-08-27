@@ -21,7 +21,7 @@ class TransactionForm extends Form
 
     public $state = true;
 
-    #[Validate('nullable|after:today')]
+    #[Validate('nullable')]
     public $expected_payment_date;
 
     #[Validate('required|exists:categories,id')]
