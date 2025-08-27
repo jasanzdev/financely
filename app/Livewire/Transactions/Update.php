@@ -10,9 +10,12 @@ class Update extends Component
 {
     public TransactionForm $form;
 
+    public $redirectTo;
+
     public function mount(Transaction $transaction)
     {
         $this->form->setTransaction($transaction);
+        $this->redirectTo = request()->query('from', 'transactions');
     }
 
     public function edit()

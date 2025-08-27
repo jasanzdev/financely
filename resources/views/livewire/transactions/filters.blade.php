@@ -45,7 +45,7 @@
         </div>
 
         <div x-cloak x-show="selectedTab !== 'historical'" id="tabpanelLatest" role="tabpanel" aria-label="latest">
-            <x-app.transaction-list :transactions="$transactions"/>
+            <x-app.transaction-list :transactions="$transactions" redirectTo="transactions"/>
 
             <div class="py-3 px-5">
                 {{ $transactions->links() }}
@@ -60,7 +60,7 @@
                 <x-app.stats-filter-bar :incomes="$incomes" :expenses="$expenses" :categories="$categories"/>
             </div>
             <x-app.transaction-list
-                :transactions="$transactions"/>
+                :transactions="$transactions" redirectTo="transactions"/>
             <div class="py-2 px-5">
                 {{ $transactions->links() }}
             </div>

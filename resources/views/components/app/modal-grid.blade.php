@@ -113,7 +113,7 @@
         <!-- Dialog Footer -->
         <div
             class="flex flex-col-reverse justify-between gap-2 border-t border-outline bg-surface-alt/60 p-4 dark:border-outline-dark dark:bg-surface-dark/20 sm:flex-row sm:items-center md:justify-end">
-            <a href="{{ route('pending-transactions') }}" wire:navigate
+            <a href="{{ route('pending.transactions') }}" wire:navigate
                class="whitespace-nowrap rounded-radius px-4 py-2 text-center text-sm font-medium tracking-wide
                 text-on-surface transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2
                 focus-visible:outline-primary active:opacity-100 active:outline-offset-0 dark:text-on-surface-dark

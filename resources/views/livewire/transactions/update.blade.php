@@ -166,7 +166,6 @@
                         <div>
                             @error('form.date') <span class="error">{{ $message }}</span> @enderror
                         </div>
-
                     </div>
 
                     <div class="mt-6">
@@ -176,7 +175,8 @@
                                 Guardar
                                 Transacción
                             </button>
-                            <a href="{{ url()->previous() ?? route('dashboard') }}" wire:navigate.prevent
+                            <a href="{{ route($redirectTo === 'dashboard' ? 'dashboard' : 'transaction.filters')  }}"
+                               wire:navigate.prevent
                                class="bg-gray-100 p-2 px-6 text-center rounded-lg shadow border border-gray-300 text-gray-900 text-sm focus:ring-neutral-500
                            focus:border-neutral-500 hover:bg-gray-400 transition-colors ease-in-out ">
                                 Cancelar

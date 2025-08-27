@@ -25,5 +25,5 @@
             </a>
         </div>
     </div>
-    <x-app.transaction-list :transactions="$transactions"/>
+    <x-app.transaction-list :transactions="$transactions" redirectTo="dashboard"/>
 </div>

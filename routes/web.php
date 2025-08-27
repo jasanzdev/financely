@@ -32,7 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('category', CategoryIndex::class)->name('category.index');
     Route::get('category/{category}/edit', CategoryEdit::class)->name('category.edit');
 
-    Route::get('pending-transactions', PendingTransactions::class)->name('pending-transactions');
+    Route::get('pending-transactions', PendingTransactions::class)->name('pending.transactions');
 });
 
 require __DIR__ . '/auth.php';

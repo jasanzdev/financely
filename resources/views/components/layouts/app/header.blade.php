@@ -23,8 +23,8 @@
                            wire:navigate>
             {{ __('Transacciones') }}
         </flux:navlist.item>
-        <flux:navlist.item icon="arrow-path" :href="route('pending-transactions')"
-                           :current="request()->routeIs('pending-transactions')"
+        <flux:navlist.item icon="arrow-path" :href="route('pending.transactions')"
+                           :current="request()->routeIs('pending.transactions')"
                            wire:navigate>
             {{ __('Pendientes') }}
         </flux:navlist.item>
@@ -104,7 +104,7 @@
                                wire:navigate>
                 {{ __('Transacciones') }}
             </flux:navlist.item>
-            <flux:navlist.item icon="arrow-path" :href="route('pending-transactions')"
+            <flux:navlist.item icon="arrow-path" :href="route('pending.transactions')"
                                :current="request()->routeIs('pending-transactions')"
                                wire:navigate>
                 {{ __('Pendientes') }}
