@@ -58,6 +58,7 @@ class PendingTransactions extends Component
         };
 
         $transactions = $query
+            ->orderBy('expected_payment_date')
             ->orderBy('date', 'desc')
             ->orderBy('updated_at', 'desc')
             ->paginate(10);

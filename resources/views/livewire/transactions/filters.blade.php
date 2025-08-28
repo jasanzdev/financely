@@ -66,5 +66,8 @@
             </div>
         </div>
     </div>
+    @if(session('message'))
+        <x-app.alert message="{{ session('message') }}"/>
+    @endif
 </div>
 

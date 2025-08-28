@@ -40,16 +40,15 @@ class Grid extends Component
         $transactions = Transaction::where('user_id', auth()->id());
 
         $pending_transactions = (clone $transactions)
-            ->where('state', 'pending');
+            ->where('state', 'pending')
+            ->orderBy('expected_payment_date');
 
         $this->receivable_transactions = (clone $pending_transactions)
             ->where('type', 'income')
-            ->orderBy('expected_payment_date')
             ->get();
 
         $this->payable_transactions = (clone $pending_transactions)
             ->where('type', 'expense')
-            ->orderBy('expected_payment_date')
             ->get();
 
         $paid_transactions = (clone $transactions)

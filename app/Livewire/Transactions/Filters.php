@@ -35,22 +35,16 @@ class Filters extends Component
     public function latestDays($days): void
     {
         $this->selectedTab = 'days';
-        $this->showType = 'all';
-        $this->selectedCategory = null;
     }
 
     public function latestMonth($month): void
     {
-        $this->showType = 'all';
         $this->selectedTab = $month === now()->month ? 'current-month' : 'previous-month';
-        $this->selectedCategory = null;
     }
 
     public function historical(): void
     {
-        $this->showType = 'all';
         $this->selectedTab = 'historical';
-        $this->selectedCategory = null;
     }
 
     public function applyFilters()
@@ -63,8 +57,6 @@ class Filters extends Component
         $transaction->delete();
 
         session()->flash('message', 'El registo ha sido eliminado del sistema.');
-
-        $this->redirect(url()->previous() ?? route('dashboard'), navigate: true);
     }
 
     public function render(): View

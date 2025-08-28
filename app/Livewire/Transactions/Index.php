@@ -25,8 +25,6 @@ class Index extends Component
         $transaction->delete();
 
         session()->flash('message', 'El registo ha sido eliminado del sistema.');
-
-        $this->redirect(url()->previous() ?? route('dashboard'), navigate: true);
     }
 
     public function render()

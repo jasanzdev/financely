@@ -27,7 +27,7 @@
             </span>
         </div>
         <div class="mb-2 md:mb-3">
-            <h2 class="{{ $amountColor }} font-bold text-2xl md:text-3xl lg:text-4xl line-clamp-1">{{ $amount }}</h2>
+            <h2 class="{{ $amountColor }} font-bold text-xl md:text-2xl lg:text-3xl line-clamp-1">{{ $amount }}</h2>
         </div>
         <div class="mt-auto">
             <span

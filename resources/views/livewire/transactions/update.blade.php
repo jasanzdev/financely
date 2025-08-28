@@ -175,7 +175,13 @@
                                 Guardar
                                 Transacción
                             </button>
-                            <a href="{{ route($redirectTo === 'dashboard' ? 'dashboard' : 'transaction.filters')  }}"
+                            <a href="{{ route(
+                            match ($redirectTo){
+                                'transactions' => 'transaction.filters',
+                                'pending' => 'pending.transactions',
+                                default => 'dashboard',
+                            })
+                            }}"
                                wire:navigate.prevent
                                class="bg-gray-100 p-2 px-6 text-center rounded-lg shadow border border-gray-300 text-gray-900 text-sm focus:ring-neutral-500
                            focus:border-neutral-500 hover:bg-gray-400 transition-colors ease-in-out ">

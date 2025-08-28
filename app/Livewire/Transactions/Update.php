@@ -22,7 +22,11 @@ class Update extends Component
     {
         $this->form->update();
         session()->flash('message', 'Transacción actualizada con exito');
-        $this->redirect(route('transaction.filters'), navigate: true);
+        $this->redirect(route(match ($this->redirectTo) {
+            'transactions' => 'transaction.filters',
+            'pending' => 'pending.transactions',
+            default => 'dashboard',
+        }), navigate: true);
     }
 
     public function render()
