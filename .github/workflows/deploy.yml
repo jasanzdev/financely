@@ -32,6 +32,7 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_DESTINATION: ${{ secrets.FTP_DESTINATION }}
         run: |
+          php artisan migrate &&
           php artisan config:cache &&
           php artisan optimize:clear &&
           php artisan config:cache &&
