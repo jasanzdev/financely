@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->foreignUuid('user_id')->constrained();
             $table->unique(['user_id', 'category']);
             $table->unique(['user_id', 'slug']);
-            $table->softDeletes();
             $table->timestamps();
         });
     }

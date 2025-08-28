@@ -7,11 +7,10 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
 {
-    use HasUuids, SoftDeletes;
+    use HasUuids;
 
     protected $fillable = ['type', 'amount', 'description', 'state', 'expected_payment_date', 'date', 'user_id', 'category_id'];
 
