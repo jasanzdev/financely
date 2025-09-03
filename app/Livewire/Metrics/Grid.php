@@ -37,7 +37,9 @@ class Grid extends Component
 
     public function render(): View
     {
-        $transactions = Transaction::where('user_id', auth()->id());
+        $transactions = Transaction::where('user_id', auth()->id())
+            ->whereMonth('date', now()->month)
+            ->whereYear('date', now()->year);
 
         $pending_transactions = (clone $transactions)
             ->where('state', 'pending')

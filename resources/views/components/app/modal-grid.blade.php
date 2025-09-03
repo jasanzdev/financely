@@ -40,7 +40,8 @@
         <div class="px-4 overflow-y-auto">
             <ul class="space-y-3 mt-3 sm:mt-4">
                 @forelse($modalType === 'receivable' ? $receivableTransactions : $payableTransactions as $transaction)
-                    <li class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 rounded-lg bg-surface-alt shadow-sm border dark:border-neutral-700 dark:bg-surface-dark-alt/50">
+                    <li wire:key="toggle-{{ $transaction->id }}"
+                        class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 rounded-lg bg-surface-alt shadow-sm border dark:border-neutral-700 dark:bg-surface-dark-alt/50">
                         <div class="flex flex-col sm:flex-row items-start sm:items-center flex-1">
                             <div class="flex items-center w-full sm:w-auto mb-3 sm:mb-0">
                                 <div
@@ -87,8 +88,9 @@
                                 class="text-sm sm:text-base font-semibold {{ $transaction->type === 'income' ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
                                 <span>{{ $transaction->type === 'income' ? '+' : '-' }} ${{ number_format($transaction->amount, 2, ',', '.') }}</span>
                             </div>
-                            <label for="toggleGrid" class="inline-flex items-center gap-3">
-                                <input id="toggleGrid" type="checkbox" class="peer sr-only" role="switch"
+                            <label for="toggle-{{ $transaction->id }}" class="inline-flex items-center gap-3">
+                                <input id="toggle-{{ $transaction->id }}" type="checkbox" class="peer sr-only"
+                                       role="switch"
                                        wire:click.prevent="changeStatus('{{ $transaction->id }}', '')"
                                        wire:confirm="Desea marcar como pagada esta transacción?"
                                 />
@@ -100,7 +102,6 @@
                                     class="relative h-6 w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-surface-alt after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-on-surface after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:bg-on-primary peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-primary peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:border-outline-dark dark:bg-surface-dark-alt dark:after:bg-on-surface-dark dark:peer-checked:bg-primary-dark dark:peer-checked:after:bg-on-primary-dark dark:peer-focus:outline-outline-dark-strong dark:peer-focus:peer-checked:outline-primary-dark"
                                     aria-hidden="true"></div>
                             </label>
-
                         </div>
                     </li>
                 @empty

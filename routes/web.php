@@ -2,6 +2,7 @@
 
 use App\Livewire\Category\CategoryEdit;
 use App\Livewire\Category\CategoryIndex;
+use App\Livewire\Obligations\MonthlyBillings;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -28,11 +29,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('transaction/{transaction}/edit', Update::class)->name('transaction.edit');
     Route::get('transaction', Filters::class)->name('transaction.filters');
+    Route::get('pending-transactions', PendingTransactions::class)->name('pending.transactions');
 
     Route::get('category', CategoryIndex::class)->name('category.index');
     Route::get('category/{category}/edit', CategoryEdit::class)->name('category.edit');
 
-    Route::get('pending-transactions', PendingTransactions::class)->name('pending.transactions');
+    Route::get('obligation', MonthlyBillings::class)->name('monthly.billings');
 });
 
 require __DIR__ . '/auth.php';

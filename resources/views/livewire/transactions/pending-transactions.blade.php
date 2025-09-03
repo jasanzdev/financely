@@ -94,7 +94,8 @@
         <div class="px-2 py-4 text-on-surface dark:text-on-surface-dark">
             <ul class="space-y-3 mt-3 sm:mt-4">
                 @forelse($transactions as $transaction)
-                    <li class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 rounded-lg bg-surface-alt shadow-sm border dark:border-neutral-700 dark:bg-surface-dark-alt/50 hover:shadow-md dark:hover:shadow-neutral-300 transition-shadow duration-200">
+                    <li wire:key="toggle-{{ $transaction->id }}"
+                        class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 rounded-lg bg-surface-alt shadow-sm border dark:border-neutral-700 dark:bg-surface-dark-alt/50 hover:shadow-md dark:hover:shadow-neutral-300 transition-shadow duration-200">
                         <a href="{{ route('transaction.edit', [$transaction, 'from' => 'pending']) }}"
                            wire:navigate
                            class="flex flex-col sm:flex-row items-start sm:items-center flex-1">
@@ -143,8 +144,9 @@
                                 class="text-sm sm:text-base font-semibold {{ $transaction->type === 'income' ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
                                 <span>{{ $transaction->type === 'income' ? '+' : '-' }} ${{ number_format($transaction->amount, 2, ',', '.') }}</span>
                             </div>
-                            <label for="pendingToggle" class="inline-flex items-center gap-3">
-                                <input id="pendingToggle" type="checkbox" class="peer sr-only" role="switch"
+                            <label for="toggle-{{ $transaction->id }}" class="inline-flex items-center gap-3">
+                                <input id="toggle-{{ $transaction->id }}" type="checkbox" class="peer sr-only"
+                                       role="switch"
                                        wire:click.prevent="changeStatus('{{ $transaction->id }}')"
                                        wire:confirm="Desea marcar como pagada esta transacción?"
                                 />

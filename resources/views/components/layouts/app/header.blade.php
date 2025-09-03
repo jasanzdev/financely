@@ -33,6 +33,11 @@
                            wire:navigate>
             {{ __('Categorías') }}
         </flux:navlist.item>
+        <flux:navlist.item icon="exclamation-circle" :href="route('monthly.billings')"
+                           :current="request()->routeIs('monthly*')"
+                           wire:navigate>
+            {{ __('Obligaciones') }}
+        </flux:navlist.item>
     </flux:navbar>
 
     <flux:spacer/>
@@ -69,7 +74,7 @@
 
             <flux:menu.radio.group>
                 <flux:menu.item :href="route('settings.profile')" icon="cog"
-                                wire:navigate>{{ __('Preferencias') }}</flux:menu.item>
+                                wire:navigate>{{ __('Configuración') }}</flux:menu.item>
             </flux:menu.radio.group>
 
             <flux:menu.separator/>
@@ -113,6 +118,11 @@
                                :current="request()->routeIs('category*')"
                                wire:navigate>
                 {{ __('Categorías') }}
+            </flux:navlist.item>
+            <flux:navlist.item icon="exclamation-circle" :href="route('monthly.billings')"
+                               :current="request()->routeIs('monthly*')"
+                               wire:navigate>
+                {{ __('Obligaciones') }}
             </flux:navlist.item>
         </flux:navlist.group>
     </flux:navlist>

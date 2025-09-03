@@ -1,6 +1,6 @@
 <div x-cloak x-show="modalIsOpen" x-transition.opacity.duration.200ms x-trap.inert.noscroll="modalIsOpen"
      x-on:keydown.esc.window="modalIsOpen = false" x-on:click.self="modalIsOpen = false"
-     class="fixed inset-0 z-30 flex items-end justify-center bg-black/70 p-4 pb-8 backdrop-blur-xs sm:items-center lg:p-8"
+     class="fixed inset-0 z-30 flex items-start justify-center bg-black/70 p-4 pb-8 backdrop-blur-xs sm:items-center lg:p-8"
      role="dialog" aria-modal="true" aria-labelledby="defaultModalTitle">
     <!-- Modal Dialog -->
     <div x-show="modalIsOpen"
