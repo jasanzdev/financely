@@ -3,10 +3,9 @@
         <x-app.alert message="{{ session('message') }}"/>
     @endif
     <div class="max-w-7xl mx-auto">
-        <div
-            class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-8 sm:px-6">
-            <div>
-                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:px-4">
+            <div class="w-full sm:w-auto">
+                <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
                     Obligaciones Mensuales
                 </h1>
                 <p class="mt-1 text-sm sm:text-base text-gray-600 dark:text-gray-300">
@@ -14,43 +13,47 @@
                 </p>
             </div>
             <button type="button" wire:click="openModal"
-                    class="inline-flex justify-center items-center gap-2 whitespace-nowrap bg-neutral-900 rounded-lg border border-surface-alt dark:border-surface-dark-alt px-4 py-2 sm:px-11 sm:py-2.5 text-sm font-medium tracking-wide text-neutral-100 transition hover:opacity-75 text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-alt active:opacity-100 active:outline-offset-0 disabled:opacity-75 disabled:cursor-not-allowed dark:bg-surface-dark-alt dark:text-on-surface-dark-strong dark:focus-visible:outline-surface-dark-alt">
+                    class="inline-flex justify-center items-center gap-2 whitespace-nowrap bg-neutral-900 rounded-lg border border-surface-alt dark:border-surface-dark-alt px-3 py-2 sm:px-6 sm:py-2.5 text-sm font-medium tracking-wide text-neutral-100 transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-alt active:opacity-100 active:outline-offset-0 disabled:opacity-75 disabled:cursor-not-allowed dark:bg-surface-dark-alt dark:text-on-surface-dark-strong dark:focus-visible:outline-surface-dark-alt w-full sm:w-auto">
                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                     class="size-5" fill="currentColor">
+                     class="size-4 sm:size-5" fill="currentColor">
                     <path fill-rule="evenodd"
                           d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
                           clip-rule="evenodd"/>
                 </svg>
                 Agregar
             </button>
-
         </div>
 
         <!-- Categories List -->
         <ul class="space-y-4">
             <li wire:key="obligation-resume"
                 class="p-4 sm:p-5 rounded-xl bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200">
-                <div class="flex items-center w-full sm:w-auto mb-3 sm:mb-0">
-                    <div class="flex flex-col gap-2">
-                        <p class="text-base sm:text-xl font-medium text-on-surface dark:text-on-surface-dark line-clamp-2">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center w-full gap-4">
+                    <div class="flex flex-col gap-2 w-full">
+                        <p class="text-base sm:text-lg font-medium text-on-surface dark:text-on-surface-dark line-clamp-2">
                             Total Mensual
                         </p>
-
-                        <span
-                            class="px-2 mt-3 text-3xl font-bold">
-                                $ {{ $totalObligation }}
-                            </span>
+                        <span class="text-2xl sm:text-3xl font-bold">
+                            $ {{ $totalObligation }}
+                        </span>
                         <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                                {{ $countObligation }} obligaciones activas
+                            {{ $countObligation }} obligaciones activas
                         </span>
                     </div>
                 </div>
             </li>
             @forelse($obligations as $obligation)
                 <li wire:key="obligation-{{$obligation->id}}"
-                    class="p-4 sm:p-5 rounded-xl bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200">
-                    <div class="flex justify-between w-full sm:w-auto mb-3 sm:mb-0">
-                        <div class="flex flex-col gap-3">
+                    class="p-4 sm:p-5 rounded-xl bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200 relative">
+                    <span
+                        class="absolute top-4 right-4 rounded-radius w-fit border px-2 py-1 text-xs font-medium
+                        {{ $obligation->is_active
+                        ? 'border-success bg-success text-on-success dark:border-success dark:bg-success dark:text-on-success'
+                        : 'border-danger bg-danger text-on-danger dark:border-danger dark:bg-danger dark:text-on-danger' }}">
+                        {{ $obligation->is_active ? 'Activo' : 'Inactivo' }}
+                    </span>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-3 w-full">
                             <div>
                                 <p class="text-base sm:text-lg font-medium text-on-surface dark:text-on-surface-dark line-clamp-2">
                                     {{ $obligation->name }}
@@ -61,13 +64,13 @@
                                     {{ $obligation->description }}
                                 </p>
                             </div>
-                            <div class="flex flex-wrap items-center gap-5">
+                            <div class="flex flex-wrap items-center gap-3 sm:gap-5">
                                 <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                                     $ {{ $obligation->amount }}
                                 </span>
                                 <span class="flex gap-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                         class="size-5">
+                                         class="size-4 sm:size-5">
                                         <path
                                             d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"/>
                                         <path fill-rule="evenodd"
@@ -82,16 +85,15 @@
                                 </span>
                             </div>
                         </div>
-                        <div
-                            class="flex items-start justify-between w-full sm:w-auto sm:justify-end gap-3 mt-2 sm:mt-0">
+                        <div class="flex items-center justify-end gap-2 sm:gap-3 w-full">
                             <button wire:click.prevent="changeStatus('{{ $obligation->id }}')"
                                     wire:confirm="Estás seguro que desea {{ $obligation->is_active ? 'desactivar': 'activar'}} esta obligación?"
-                                    class="py-1 px-4 sm:px-3 sm:py-2 text-xs border border-neutral-300 dark:border-neutral-500 hover:bg-neutral-200 hover:dark:bg-neutral-700 text-neutral-950 dark:text-white shadow-lg rounded-lg cursor-pointer transition-colors duration-200"
+                                    class="py-1 px-3 sm:px-4 sm:py-2 text-xs border border-neutral-300 dark:border-neutral-500 hover:bg-neutral-200 hover:dark:bg-neutral-700 text-neutral-950 dark:text-white shadow-lg rounded-lg cursor-pointer transition-colors duration-200
+                                    {{ $obligation->is_active ? 'bg-danger' : 'bg-success' }}"
                                     type="button"
                                     aria-label="Actived transaction">
                                 {{ $obligation->is_active ? 'Desactivar' : 'Activar' }}
                             </button>
-
                             <button wire:click.prevent="openModal('{{ $obligation->id }}')"
                                     class="p-1 sm:p-2 border border-neutral-300 dark:border-neutral-500 hover:bg-neutral-200 hover:dark:bg-neutral-700 text-white shadow-lg rounded cursor-pointer transition-colors duration-200"
                                     type="button"
@@ -103,12 +105,10 @@
                                     <path
                                         d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z"/>
                                 </svg>
-
                             </button>
-
                             <button wire:click.prevent="delete('{{ $obligation->id }}')"
                                     wire:confirm="Estás seguro que desea eliminar la transacción?"
-                                    class="p-1 sm:p-2 border border-neutral-300 dark:border-neutral-500 hover:bg-neutral-200 hover:dark:bg-neutral-700 text-white shadow-lg rounded cursor-pointer transition-colors duration-200"
+                                    class="p-1 sm:p-2 border border-danger hover:bg-neutral-200 hover:dark:bg-neutral-700 text-white shadow-lg rounded cursor-pointer transition-colors duration-200"
                                     type="button"
                                     aria-label="Delete transaction">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
