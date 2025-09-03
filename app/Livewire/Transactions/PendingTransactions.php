@@ -46,7 +46,8 @@ class PendingTransactions extends Component
     public function render()
     {
         $query = Transaction::where('user_id', auth()->id())
-            ->where('state', 'pending');
+            ->where('state', 'pending')
+            ->whereMonth('date', '<=', now()->month);
 
         $this->receivables = (clone $query)->where('type', 'income')->get();
         $this->payables = (clone $query)->where('type', 'expense')->get();
