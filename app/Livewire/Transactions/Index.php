@@ -12,7 +12,7 @@ class Index extends Component
     public function mount()
     {
         $user = auth()->id();
-        $this->transactions = Transaction::take(7)
+        $this->transactions = Transaction::take(8)
             ->where('user_id', $user)
             ->where('state', 'paid')
             ->whereMonth('created_at', date('m'))

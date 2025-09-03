@@ -59,11 +59,18 @@ class ObligationForm extends Form
     public function update()
     {
         $this->validate();
-        $category = Category::where('slug', 'obligaciones-mensuales')->firstOrFail();
+        $category = Category::firstOrCreate(
+            ['slug' => 'obligaciones-mensuales'],
+            [
+                'category' => 'Obligaciones Mensuales',
+                'description' => 'Pagos fijos mensuales',
+                'user_id' => auth()->id()
+            ]
+        );
         $transactions = Transaction::where('user_id', auth()->id())
             ->where('category_id', $category->id)
             ->where('state', 'pending')
-            ->where('date', '>=', Carbon::today())
+            ->where('expected_payment_date', '>=', Carbon::today())
             ->where('description', $this->obligation->name)
             ->get();
         $this->obligation->update($this->all());

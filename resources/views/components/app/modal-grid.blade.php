@@ -74,11 +74,13 @@
                                 class="bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-full px-2 py-0.5 text-xs">
                                 {{ $transaction->category->category }}
                             </span>
-
                                         <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                                Fecha de pago -> {{$transaction->expected_payment_date}}
+                                {{$transaction->date}}
                             </span>
                                     </div>
+                                    <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                                Fecha de pago -> {{$transaction->expected_payment_date}}
+                            </span>
                                 </div>
                             </div>
                         </div>

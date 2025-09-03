@@ -26,10 +26,11 @@
         </div>
 
         <!-- Categories List -->
-        <ul class="space-y-4">
+        <ul class="grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-5">
             @forelse($categories as $category)
-                <li class="p-4 sm:p-5 rounded-xl bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <li
+                    class="p-4 sm:p-5 rounded-xl bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200">
+                    <div class="flex flex-col gap-4">
                         <!-- Category Info -->
                         <div class="flex-1">
                             <h2 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
@@ -53,7 +54,7 @@
                                 class="p-2 rounded-lg border border-neutral-300 dark:border-neutral-600 shadow-lg hover:bg-neutral-200 dark:hover:bg-neutral-700"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                     class="size-6 fill-black">
+                                     class="size-6 fill-black dark:fill-neutral-400">
                                     <path
                                         d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z"/>
                                     <path
@@ -77,15 +78,13 @@
                             </button>
                         </div>
                     </div>
-
-                    <livewire:category.category-create redirectTo="category"/>
                 </li>
             @empty
                 <li class="text-center py-6 text-gray-500 dark:text-gray-400 text-sm sm:text-base">
                     No hay categorías registradas actualmente
                 </li>
             @endforelse
-
         </ul>
+        <livewire:category.category-create redirectTo="category"/>
     </div>
 </div>

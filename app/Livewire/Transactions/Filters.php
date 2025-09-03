@@ -86,7 +86,7 @@ class Filters extends Component
         $transactions = $query
             ->orderBy('date', 'desc')
             ->orderBy('updated_at', 'desc')
-            ->paginate(10);
+            ->paginate(12);
 
         return view('livewire.transactions.filters', compact('transactions'));
     }

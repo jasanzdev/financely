@@ -2,7 +2,7 @@
     'message'
 ])
 
-<div class="fixed bottom-0 right-0" x-cloak>
+<div class="fixed bottom-0 right-0 z-50" x-cloak>
     <div x-data="{ alertIsVisible: true }"
          x-show="alertIsVisible"
          x-init="setTimeout(() => alertIsVisible = false, 3000)"
