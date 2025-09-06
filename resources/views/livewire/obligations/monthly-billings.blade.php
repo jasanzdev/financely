@@ -25,7 +25,7 @@
         </div>
 
         <!-- Categories List -->
-        <ul class="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-5">
+        <ul class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-5">
             <li wire:key="obligation-resume"
                 class="col-span-full p-4 sm:p-5 rounded-xl bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center w-full gap-4">

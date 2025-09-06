@@ -66,33 +66,33 @@
         </div>
     </div>
 
-    <div x-data="{ selectedTab: @entangle('selectedTab') }" class="w-full p-4 mt-3">
+    <div x-data="{ selectedTab: @entangle('selectedTab') }" class="w-full p-4 sm:p-6 mt-4">
         <div x-on:keydown.right.prevent="$focus.wrap().next()" x-on:keydown.left.prevent="$focus.wrap().previous()"
-             class="flex gap-2 overflow-x-auto border-b border-outline dark:border-outline-dark" role="tablist"
+             class="flex flex-col sm:flex-row gap-2 border-b border-outline dark:border-outline-dark" role="tablist"
              aria-label="tab options">
             <button x-on:click="$wire.selectAll" x-bind:aria-selected="selectedTab === 'all'"
                     x-bind:tabindex="selectedTab === 'all' ? '0' : '-1'"
                     x-bind:class="selectedTab === 'all' ? 'font-bold text-secondary border-b-2 dark:border-primary-dark dark:text-primary-dark' : 'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'"
-                    class="h-min px-3 py-2 sm:px-4 sm:py-4 text-xs sm:text-sm {{ $selectedTab === 'all' ? 'bg-gradient-to-t from-neutral-200 dark:from-neutral-800 shadow shadow-gray-400 dark:shadow-gray-600' : '' }}"
+                    class="h-min px-4 py-3 text-sm sm:text-base {{ $selectedTab === 'all' ? 'bg-gradient-to-t from-neutral-200 dark:from-neutral-800 shadow shadow-gray-400 dark:shadow-gray-600' : '' }}"
                     type="button" role="tab" aria-controls="tabpanelAll">Todas
             </button>
             <button x-on:click="$wire.selectReceivable" x-bind:aria-selected="selectedTab === 'receivable'"
                     x-bind:tabindex="selectedTab === 'receivable' ? '0' : '-1'"
                     x-bind:class="selectedTab === 'receivable' ? 'font-bold text-secondary border-b-2 dark:border-primary-dark dark:text-primary-dark' : 'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'"
-                    class="h-min px-3 py-2 sm:px-4 sm:py-4 text-xs sm:text-sm {{ $selectedTab === 'receivable' ? 'bg-gradient-to-t from-neutral-200 dark:from-neutral-800 shadow shadow-gray-400 dark:shadow-gray-600' : '' }}"
+                    class="h-min px-4 py-3 text-sm sm:text-base {{ $selectedTab === 'receivable' ? 'bg-gradient-to-t from-neutral-200 dark:from-neutral-800 shadow shadow-gray-400 dark:shadow-gray-600' : '' }}"
                     type="button" role="tab" aria-controls="tabpanelReceivable">Pendientes de
                 cobro
             </button>
             <button x-on:click="$wire.selectPayable" x-bind:aria-selected="selectedTab === 'payable'"
                     x-bind:tabindex="selectedTab === 'payable' ? '0' : '-1'"
                     x-bind:class="selectedTab === 'payable' ? 'font-bold text-secondary border-b-2 dark:border-primary-dark dark:text-primary-dark' : 'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'"
-                    class="h-min px-3 py-2 sm:px-4 sm:py-4 text-xs sm:text-sm {{ $selectedTab === 'payable' ? 'bg-gradient-to-t from-neutral-200 dark:from-neutral-800 shadow shadow-gray-400 dark:shadow-gray-600' : '' }}"
+                    class="h-min px-4 py-3 text-sm sm:text-base {{ $selectedTab === 'payable' ? 'bg-gradient-to-t from-neutral-200 dark:from-neutral-800 shadow shadow-gray-400 dark:shadow-gray-600' : '' }}"
                     type="button" role="tab" aria-controls="tabpanelPayable">Pendientes
                 de pago
             </button>
         </div>
         <div class="px-2 py-4 text-on-surface dark:text-on-surface-dark">
-            <ul class="grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-5">
+            <ul class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-4">
                 @forelse($transactions as $transaction)
                     <li wire:key="toggle-{{ $transaction->id }}"
                         class="flex flex-col gap-3 p-3 sm:p-4 rounded-lg bg-surface-alt shadow border dark:border-neutral-700 dark:bg-surface-dark-alt/50 hover:shadow-xs dark:hover:shadow-neutral-600 transition-shadow duration-200">
@@ -126,22 +126,18 @@
                                             class="bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-full px-2 py-0.5 text-xs">
                                             {{ $transaction->category->category }}
                                         </span>
-
-                                    <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                                    @if($transaction->category->slug !== 'obligaciones-mensuales')
+                                        <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                                             {{$transaction->date}}
                                         </span>
+                                    @endif
                                 </div>
                                 <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                                        Fecha de pago -> {{$transaction->expected_payment_date}}
                                     </span>
                             </div>
                         </div>
-                        <div
-                            class="flex items-center justify-between w-full sm:w-auto sm:justify-end gap-3 mt-2 sm:mt-0">
-                            <div
-                                class="text-sm sm:text-base font-semibold {{ $transaction->type === 'income' ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
-                                <span>{{ $transaction->type === 'income' ? '+' : '-' }} ${{ number_format($transaction->amount, 2, ',', '.') }}</span>
-                            </div>
+                        <div class="flex items-center gap-3 justify-end">
                             <label for="toggle-{{ $transaction->id }}" class="inline-flex items-center gap-3">
                                 <input id="toggle-{{ $transaction->id }}" type="checkbox" class="peer sr-only"
                                        role="switch"
@@ -153,14 +149,23 @@
                                     {{ $transaction->type === 'income' ? 'Cobrar' : 'Pagar' }}
                                 </span>
                                 <div
-                                    class="relative h-6 w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-surface-alt after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-on-surface after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:bg-on-primary peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-primary peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:border-outline-dark dark:bg-surface-dark-alt dark:after:bg-on-surface-dark dark:peer-checked:bg-primary-dark dark:peer-checked:after:bg-on-primary-dark dark:peer-focus:outline-outline-dark-strong dark:peer-focus:peer-checked:outline-primary-dark"
+                                    class="relative h-7 w-12 after:h-6 after:w-6 peer-checked:after:translate-x-5 rounded-full border border-outline bg-surface-alt after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-on-surface after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:bg-on-primary peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-primary peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:border-outline-dark dark:bg-surface-dark-alt dark:after:bg-on-surface-dark dark:peer-checked:bg-primary-dark dark:peer-checked:after:bg-on-primary-dark dark:peer-focus:outline-outline-dark-strong dark:peer-focus:peer-checked:outline-primary-dark"
                                     aria-hidden="true"></div>
                             </label>
+                            <div
+                                class="text-sm sm:text-base font-semibold {{ $transaction->type === 'income' ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
+                                <span>{{ $transaction->type === 'income' ? '+' : '-' }} ${{ number_format($transaction->amount, 2, ',', '.') }}</span>
+                            </div>
+
+                        </div>
+                        <div
+                            class="flex items-center w-full sm:w-auto gap-2 sm:gap-3 mt-2 sm:mt-0">
+
                             <a href="{{ route('transaction.edit', [$transaction, 'from' => 'pending']) }}"
                                wire:navigate
                                class="p-2 rounded-lg border border-neutral-300 dark:border-neutral-600 shadow-lg hover:bg-neutral-200 dark:hover:bg-neutral-700">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                     class="size-6 fill-black dark:fill-neutral-400">
+                                     class="size-4 sm:size-6 fill-black dark:fill-neutral-400">
                                     <path
                                         d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z"/>
                                     <path
@@ -173,7 +178,7 @@
                                     type="button"
                                     aria-label="Delete transaction">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                     class="size-6 fill-danger">
+                                     class="size-4 sm:size-6 fill-danger">
                                     <path fill-rule="evenodd"
                                           d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
                                           clip-rule="evenodd"/>

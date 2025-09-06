@@ -3,7 +3,7 @@
 'redirectTo'
 ])
 
-<ul class="grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-5 mt-3">
+<ul class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-5 mt-3">
     @forelse($transactions as $transaction)
         <li class="flex flex-col gap-3 p-3 sm:p-4 rounded-lg bg-surface-alt shadow border dark:border-neutral-700 dark:bg-surface-dark-alt/50 hover:shadow-xs dark:hover:shadow-neutral-600 transition-shadow duration-200">
             <div class="flex items-center w-full sm:w-auto mb-3 sm:mb-0">

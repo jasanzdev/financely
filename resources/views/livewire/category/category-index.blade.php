@@ -26,7 +26,7 @@
         </div>
 
         <!-- Categories List -->
-        <ul class="grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-5">
+        <ul class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-5">
             @forelse($categories as $category)
                 <li
                     class="p-4 sm:p-5 rounded-xl bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 shadow-sm hover:shadow-md transition-all duration-200">
