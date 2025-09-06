@@ -1,6 +1,6 @@
 <div x-data="{ selectedTab: @entangle('selectedTab') }" class="p-3 sm:p-5 w-full">
     <div x-on:keydown.right.prevent="$focus.wrap().next()" x-on:keydown.left.prevent="$focus.wrap().previous()"
-         class="flex gap-2 border-b border-outline dark:border-outline-dark" role="tablist"
+         class="flex flex-col sm:flex-row gap-2 border-b border-outline dark:border-outline-dark" role="tablist"
          aria-label="tab options">
         <button x-on:click="$wire.latestDays(7)" x-bind:aria-selected="selectedTab === 'days'"
                 x-bind:tabindex="selectedTab === 'days' ? '0' : '-1'"

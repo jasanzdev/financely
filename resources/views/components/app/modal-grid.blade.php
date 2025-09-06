@@ -11,7 +11,7 @@
      x-trap.inert.noscroll="modalIsOpen"
      x-on:keydown.esc.window="modalIsOpen = false"
      x-on:click.self="modalIsOpen = false"
-     class="fixed inset-0 z-30 flex w-full items-start justify-center bg-black/20 p-4 pb-8 backdrop-blur-md lg:p-8"
+     class="fixed inset-0 z-30 flex w-full items-start justify-center bg-black/20 backdrop-blur-sm p-4"
      role="dialog"
      aria-modal="true"
      aria-labelledby="defaultModalTitle">
@@ -20,10 +20,10 @@
          x-transition:enter="transition ease-out duration-200 delay-100 motion-reduce:transition-opacity"
          x-transition:enter-start="opacity-0 scale-50"
          x-transition:enter-end="opacity-100 scale-100"
-         class="flex max-w-xl max-h-full flex-col gap-4 overflow-hidden rounded-radius border border-outline bg-surface text-on-surface dark:border-outline-dark dark:bg-surface-dark-alt dark:text-on-surface-dark">
+         class="flex flex-col w-full max-w-2xl max-h-[90vh] rounded-2xl shadow-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
         <!-- Dialog Header -->
         <div
-            class="flex items-center justify-between border-b border-outline bg-surface-alt/60 p-4 dark:border-outline-dark dark:bg-surface-dark/20">
+            class="flex items-center justify-between px-6 py-4 border-b border-outline bg-surface-alt/60 dark:border-outline-dark dark:bg-surface-dark/20">
             <h3 id="defaultModalTitle"
                 class="font-semibold tracking-wide text-on-surface-strong dark:text-on-surface-dark-strong">
                 {{ $modalType === 'receivable' ? 'Cuentas por Cobrar' : 'Cuentas por Pagar' }}
@@ -42,7 +42,7 @@
                 @forelse($modalType === 'receivable' ? $receivableTransactions : $payableTransactions as $transaction)
                     <li wire:key="toggle-{{ $transaction->id }}"
                         class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 rounded-lg bg-surface-alt shadow-sm border dark:border-neutral-700 dark:bg-surface-dark-alt/50">
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center flex-1">
+                        <div class="flex flex-col items-start sm:items-center flex-1">
                             <div class="flex items-center w-full sm:w-auto mb-3 sm:mb-0">
                                 <div
                                     class="rounded-full p-2 mr-3 {{ $transaction->type === 'income' ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30' }}">
@@ -70,22 +70,33 @@
                                     </p>
 
                                     <div class="flex flex-wrap items-center gap-2 mt-1">
-                            <span
-                                class="bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-full px-2 py-0.5 text-xs">
-                                {{ $transaction->category->category }}
-                            </span>
-                                        <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                                {{$transaction->date}}
-                            </span>
+                                        <span
+                                            class="bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-full px-2 py-0.5 text-xs">
+                                         {{ $transaction->category->category }}
+                                        </span>
+                                        @if($transaction->category->slug !== 'obligaciones-mensuales')
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                 fill="currentColor"
+                                                 class="size-4 sm:size-5">
+                                                <path
+                                                    d="M12.75 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM7.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM8.25 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM9.75 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM10.5 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM12.75 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM14.25 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 17.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 15.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM15 12.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM16.5 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"/>
+                                                <path fill-rule="evenodd"
+                                                      d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z"
+                                                      clip-rule="evenodd"/>
+                                            </svg>
+                                            <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                                                {{$transaction->date}}
+                                            </span>
+                                        @endif
                                     </div>
                                     <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                                Fecha de pago -> {{$transaction->expected_payment_date}}
-                            </span>
+                                        Fecha de pago -> {{$transaction->expected_payment_date}}
+                                    </span>
                                 </div>
                             </div>
                         </div>
                         <div
-                            class="flex items-center justify-between w-full sm:w-auto sm:justify-end gap-3 mt-2 sm:mt-0">
+                            class="flex items-center justify-end w-full sm:w-auto gap-3 mt-2 sm:mt-0">
                             <div
                                 class="text-sm sm:text-base font-semibold {{ $transaction->type === 'income' ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
                                 <span>{{ $transaction->type === 'income' ? '+' : '-' }} ${{ number_format($transaction->amount, 2, ',', '.') }}</span>
@@ -101,7 +112,7 @@
                                     {{ $modalType === 'receivable' ? 'Cobrar' : 'Pagar' }}
                                 </span>
                                 <div
-                                    class="relative h-6 w-11 after:h-5 after:w-5 peer-checked:after:translate-x-5 rounded-full border border-outline bg-surface-alt after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-on-surface after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:bg-on-primary peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-primary peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:border-outline-dark dark:bg-surface-dark-alt dark:after:bg-on-surface-dark dark:peer-checked:bg-primary-dark dark:peer-checked:after:bg-on-primary-dark dark:peer-focus:outline-outline-dark-strong dark:peer-focus:peer-checked:outline-primary-dark"
+                                    class="relative h-7 w-12 after:h-6 after:w-6 peer-checked:after:translate-x-5 rounded-full border border-outline bg-surface-alt after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-on-surface after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:bg-on-primary peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-primary peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:border-outline-dark dark:bg-surface-dark-alt dark:after:bg-on-surface-dark dark:peer-checked:bg-primary-dark dark:peer-checked:after:bg-on-primary-dark dark:peer-focus:outline-outline-dark-strong dark:peer-focus:peer-checked:outline-primary-dark"
                                     aria-hidden="true"></div>
                             </label>
                         </div>
@@ -115,7 +126,7 @@
         </div>
         <!-- Dialog Footer -->
         <div
-            class="flex flex-col-reverse justify-between gap-2 border-t border-outline bg-surface-alt/60 p-4 dark:border-outline-dark dark:bg-surface-dark/20 sm:flex-row sm:items-center md:justify-end">
+            class="flex flex-col-reverse justify-between gap-2 mt-3 border-t border-outline bg-surface-alt/60 p-4 dark:border-outline-dark dark:bg-surface-dark/20 sm:flex-row sm:items-center md:justify-end">
             <a href="{{ route('pending.transactions') }}" wire:navigate
                class="whitespace-nowrap rounded-radius px-4 py-2 text-center text-sm font-medium tracking-wide
                 text-on-surface transition hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2
