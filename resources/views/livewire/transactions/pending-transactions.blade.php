@@ -198,6 +198,9 @@
                     </li>
                 @endforelse
             </ul>
+            <div class="py-2 px-5">
+                {{ $transactions->links() }}
+            </div>
         </div>
     </div>
 

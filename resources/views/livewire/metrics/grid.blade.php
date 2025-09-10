@@ -6,7 +6,7 @@
         <a href="{{ route('transaction.filters') }}" wire:navigate>
             <x-app.card
                 title="Ingresos"
-                amount="$U {{$total_income}}"
+                amount="$U {{ number_format($total_income, 2, ',', '.') }}"
                 description="Ingresos totales este mes"
                 amountColor="text-green-700"
                 iconColor="text-green-700"
@@ -22,7 +22,7 @@
         <a href="{{ route('transaction.filters') }}" wire:navigate>
             <x-app.card
                 title="Gastos"
-                amount="$U {{$total_expense}}"
+                amount="$U {{ number_format($total_expense, 2, ',', '.') }}"
                 description="Gastos totales este mes"
                 amountColor="text-red-700"
                 iconColor="text-red-700"
@@ -39,9 +39,9 @@
         <a href="{{ route('transaction.filters') }}" wire:navigate>
             <x-app.card
                 title="Dinero disponible"
-                amount="$U {{ $total_income - $total_expense }}"
+                amount="$U {{ number_format($total_income - $total_expense, 2, ',', '.') }}"
                 description="Dinero disponible este mes"
-                amountColor="text-green-700"
+                amountColor="{{ $total_expense > $total_income ? 'text-red-700' : 'text-green-700'}}"
                 iconColor="text-green-700"
                 icon=' <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" class="size-6">

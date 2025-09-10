@@ -59,10 +59,9 @@ class PendingTransactions extends Component
         };
 
         $transactions = $query
-            ->orderBy('expected_payment_date')
-            ->orderBy('date', 'desc')
+            ->orderBy('date')
             ->orderBy('updated_at', 'desc')
-            ->paginate(10);
+            ->paginate(12);
 
         return view('livewire.transactions.pending-transactions', compact('transactions'));
     }

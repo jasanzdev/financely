@@ -38,12 +38,12 @@ class Grid extends Component
     public function render(): View
     {
         $transactions = Transaction::where('user_id', auth()->id())
-            ->whereMonth('date', now()->month)
-            ->whereYear('date', now()->year);
+            ->whereMonth('date', '<=', now()->month)
+            ->whereYear('date', '<=', now()->year);
 
         $pending_transactions = (clone $transactions)
             ->where('state', 'pending')
-            ->orderBy('expected_payment_date');
+            ->orderBy('date');
 
         $this->receivable_transactions = (clone $pending_transactions)
             ->where('type', 'income')

@@ -37,11 +37,9 @@ class TransactionForm extends Form
         $this->type = $transaction->type;
         $this->amount = $transaction->amount;
         $this->description = $transaction->description;
-        $this->state = $transaction->state;
-        $this->expected_payment_date = $transaction->expected_payment_date;
         $this->date = $transaction->date;
         $this->category_id = $transaction->category->id;
-        $this->state = $transaction->state === 'paid' ? true : false;
+        $this->state = $transaction->state === 'paid';
         $this->expected_payment_date = $transaction->expected_payment_date;
     }
 

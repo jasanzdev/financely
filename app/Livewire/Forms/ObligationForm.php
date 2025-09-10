@@ -70,7 +70,6 @@ class ObligationForm extends Form
         $transactions = Transaction::where('user_id', auth()->id())
             ->where('category_id', $category->id)
             ->where('state', 'pending')
-            ->where('expected_payment_date', '>=', Carbon::today())
             ->where('description', $this->obligation->name)
             ->get();
         $this->obligation->update($this->all());
@@ -86,15 +85,22 @@ class ObligationForm extends Form
 
     public function createTransactions(Obligation $obligation): void
     {
-        $category = Category::firstOrCreate(
-            ['category' => 'Obligaciones Mensuales'],
-            [
-                'category' => 'Obligaciones Mensuales',
-                'description' => 'Pagos fijos mensuales',
-                'user_id' => auth()->id()
-            ]
-        );
-        for ($month = now()->month; $month <= 12; $month++) {
+        $category = Category::where('slug', 'obligaciones-mensuales')
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if (!$category) {
+            $category = Category::create(
+                [
+                    'category' => 'Obligaciones Mensuales',
+                    'description' => 'Pagos fijos mensuales',
+                    'user_id' => auth()->id()
+                ]
+            );
+        }
+
+        $start_month = now()->day > $obligation->limit_day ? now()->month + 1 : now()->month;
+        for ($month = $start_month; $month <= 12; $month++) {
             $date = Carbon::today()->setMonth($month);
             $expected_payment_date = Carbon::today()->setMonth($month)->setDay($obligation->limit_day);
             Transaction::create([
@@ -118,7 +124,6 @@ class ObligationForm extends Form
         $transactions = Transaction::where('user_id', auth()->id())
             ->where('category_id', $category->id)
             ->where('state', 'pending')
-            ->where('date', '>=', Carbon::today())
             ->where('description', $obligation->name)
             ->get();
         foreach ($transactions as $transaction) {
