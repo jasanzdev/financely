@@ -90,9 +90,11 @@
                                             </span>
                                         @endif
                                     </div>
-                                    <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                                    @if ($transaction->expected_payment_date)
+                                        <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                                         Fecha de pago -> {{$transaction->formatted_expected_payment_date}}
                                     </span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
