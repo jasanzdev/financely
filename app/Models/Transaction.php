@@ -43,6 +43,6 @@ class Transaction extends Model
 
     public function getIsPaymentFutureAttribute()
     {
-        return $this->expected_payment_date >= now()->startOfDay() ?? false;
+        return $this->expected_payment_date >= now()->startOfDay() ?? true;
     }
 }
