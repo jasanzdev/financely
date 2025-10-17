@@ -54,6 +54,7 @@ class TransactionForm extends Form
     public function update()
     {
         $validated = $this->validate();
+        $validated['expected_payment_date'] = !blank($validated['expected_payment_date']) ? $validated['expected_payment_date'] : null;
         $validated['state'] = $this->state ? 'paid' : 'pending';
         $this->transaction->update($validated);
     }

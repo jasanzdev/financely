@@ -42,7 +42,7 @@
                 @forelse($modalType === 'receivable' ? $receivableTransactions : $payableTransactions as $transaction)
                     <li wire:key="toggle-{{ $transaction->id }}"
                         class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 sm:p-4 rounded-lg bg-surface-alt shadow-sm border dark:border-neutral-700 dark:bg-surface-dark-alt/50
-                         {{ !$transaction->is_payment_future ? 'border-red-300 dark:border-red-600 animate-pulse' : '' }}">
+                         {{ $transaction->is_payment_future === false ? 'border-red-300 dark:border-red-600 animate-pulse' : '' }}">
                         <div class="flex flex-col items-start sm:items-center flex-1">
                             <div class="flex items-center w-full sm:w-auto mb-3 sm:mb-0">
                                 <div
