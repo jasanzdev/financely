@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +16,6 @@ class Transaction extends Model
         'amount' => 'decimal:2',
         'date' => 'date',
         'expected_payment_date' => 'date',
-        'state' => 'boolean',
     ];
 
     public function user(): BelongsTo
