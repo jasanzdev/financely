@@ -95,7 +95,8 @@
             <ul class="grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-4">
                 @forelse($transactions as $transaction)
                     <li wire:key="toggle-{{ $transaction->id }}"
-                        class="flex flex-col gap-3 p-3 sm:p-4 rounded-lg bg-surface-alt shadow border dark:border-neutral-700 dark:bg-surface-dark-alt/50 hover:shadow-xs dark:hover:shadow-neutral-600 transition-shadow duration-200">
+                        class="flex flex-col gap-3 p-3 sm:p-4 rounded-lg bg-surface-alt shadow border dark:border-neutral-700 dark:bg-surface-dark-alt/50 hover:shadow-xs dark:hover:shadow-neutral-600 transition-shadow duration-200
+                        {{ !$transaction->is_payment_future ? 'border-2 border-red-300 dark:border-red-600 animate-pulse' : '' }}">
                         <div class="flex items-center w-full sm:w-auto mb-2 sm:mb-0">
                             <div
                                 class="rounded-full p-2 mr-2 sm:mr-3 {{ $transaction->type === 'income' ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30' }}">
@@ -128,12 +129,12 @@
                                         </span>
                                     @if($transaction->category->slug !== 'obligaciones-mensuales')
                                         <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                                            {{$transaction->date}}
+                                            {{$transaction->formatted_date}}
                                         </span>
                                     @endif
                                 </div>
                                 <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                                       Fecha de pago -> {{$transaction->expected_payment_date}}
+                                       Fecha de pago -> {{$transaction->formatted_expected_payment_date}}
                                     </span>
                             </div>
                         </div>

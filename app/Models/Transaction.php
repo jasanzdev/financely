@@ -16,6 +16,9 @@ class Transaction extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
+        'date' => 'date',
+        'expected_payment_date' => 'date',
+        'state' => 'boolean',
     ];
 
     public function user(): BelongsTo
@@ -28,17 +31,18 @@ class Transaction extends Model
         return $this->belongsTo(Category::class);
     }
 
-    protected function date(): Attribute
+    protected function getFormattedDateAttribute()
     {
-        return Attribute::make(
-            get: fn($value) => Carbon::parse($value)->format('y-m-d'),
-        );
+        return $this->date?->format('Y-m-d') ?? '';
     }
 
-    protected function expectedPaymentDate(): Attribute
+    public function getFormattedExpectedPaymentDateAttribute()
     {
-        return Attribute::make(
-            get: fn($value) => Carbon::parse($value)->format('y-m-d'),
-        );
+        return $this->expected_payment_date?->format('Y-m-d') ?? '';
+    }
+
+    public function getIsPaymentFutureAttribute()
+    {
+        return $this->expected_payment_date >= now()->startOfDay() ?? false;
     }
 }

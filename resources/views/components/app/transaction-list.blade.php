@@ -37,7 +37,7 @@
                                 {{ $transaction->category->category }}
                             </span>
                         <span class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                                {{ $transaction->date }}
+                                {{ $transaction->formatted_date }}
                             </span>
                     </div>
                 </div>

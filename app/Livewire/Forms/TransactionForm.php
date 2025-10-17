@@ -37,10 +37,10 @@ class TransactionForm extends Form
         $this->type = $transaction->type;
         $this->amount = $transaction->amount;
         $this->description = $transaction->description;
-        $this->date = $transaction->date;
+        $this->date = $transaction->formatted_date;
         $this->category_id = $transaction->category->id;
         $this->state = $transaction->state === 'paid';
-        $this->expected_payment_date = $transaction->expected_payment_date;
+        $this->expected_payment_date = $transaction->formatted_expected_payment_date;
     }
 
     public function store()
