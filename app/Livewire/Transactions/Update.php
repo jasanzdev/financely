@@ -14,6 +14,7 @@ class Update extends Component
 
     public function mount(Transaction $transaction)
     {
+        $this->authorize('update', $transaction);
         $this->form->setTransaction($transaction);
         $this->redirectTo = request()->query('from', 'transactions');
     }

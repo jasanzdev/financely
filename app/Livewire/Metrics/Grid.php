@@ -16,7 +16,6 @@ class Grid extends Component
     public $modalIsOpen = false;
     public $modalType = null;
 
-
     public function openModal($type)
     {
         $this->modalType = $type;
@@ -31,40 +30,39 @@ class Grid extends Component
 
     public function changeStatus(Transaction $transaction)
     {
-        $transaction->update(['state' => 'paid', 'expected_payment_date' => now()]);
-        $this->modalIsOpen = true;
+        $this->authorize('update', $transaction);
+        $transaction->update(['state' => 'paid', 'expected_payment_date' => null]);
     }
 
     public function render(): View
     {
-        $transactions = Transaction::where('user_id', auth()->id())
-            ->whereMonth('date', '<=', now()->month)
-            ->whereYear('date', '<=', now()->year);
+        $base = Transaction::where('user_id', auth()->id());
 
-        $pending_transactions = (clone $transactions)
+        // Pending transactions up to the end of the current month — one query,
+        // partitioned in PHP to avoid a second round-trip.
+        $allPending = (clone $base)
             ->where('state', 'pending')
-            ->orderBy('date');
-
-        $this->receivable_transactions = (clone $pending_transactions)
-            ->where('type', 'income')
+            ->where('date', '<', now()->addMonth()->startOfMonth())
+            ->orderBy('date')
             ->get();
 
-        $this->payable_transactions = (clone $pending_transactions)
-            ->where('type', 'expense')
-            ->get();
+        $this->receivable_transactions = $allPending->where('type', 'income');
+        $this->payable_transactions    = $allPending->where('type', 'expense');
 
-        $paid_transactions = (clone $transactions)
+        // Current-month paid totals — single query with conditional aggregation
+        // instead of two separate sum() calls.
+        $totals = (clone $base)
             ->where('state', 'paid')
-            ->whereMonth('date', now()->month)
-            ->whereYear('date', now()->year);
+            ->where('date', '>=', now()->startOfMonth())
+            ->where('date', '<', now()->addMonth()->startOfMonth())
+            ->selectRaw('
+                SUM(CASE WHEN type = "income"  THEN amount ELSE 0 END) as total_income,
+                SUM(CASE WHEN type = "expense" THEN amount ELSE 0 END) as total_expense
+            ')
+            ->first();
 
-        $this->total_income = (clone $paid_transactions)
-            ->where('type', 'income')
-            ->sum('amount');
-
-        $this->total_expense = (clone $paid_transactions)
-            ->where('type', 'expense')
-            ->sum('amount');
+        $this->total_income  = $totals->total_income  ?? 0;
+        $this->total_expense = $totals->total_expense ?? 0;
 
         return view('livewire.metrics.grid');
     }

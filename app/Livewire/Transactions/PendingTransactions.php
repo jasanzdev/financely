@@ -12,7 +12,6 @@ class PendingTransactions extends Component
     use WithPagination;
 
     public Collection $receivables;
-
     public Collection $payables;
     public string $selectedTab = 'all';
 
@@ -33,11 +32,13 @@ class PendingTransactions extends Component
 
     public function changeStatus(Transaction $transaction)
     {
-        $transaction->update(['state' => 'paid', 'expected_payment_date' => now()]);
+        $this->authorize('update', $transaction);
+        $transaction->update(['state' => 'paid', 'expected_payment_date' => null]);
     }
 
     public function delete(Transaction $transaction)
     {
+        $this->authorize('delete', $transaction);
         $transaction->delete();
 
         session()->flash('message', 'El registo ha sido eliminado del sistema.');
@@ -47,18 +48,19 @@ class PendingTransactions extends Component
     {
         $query = Transaction::where('user_id', auth()->id())
             ->where('state', 'pending')
-            ->whereMonth('date', '<=', now()->month);
+            ->where('date', '<', now()->addMonth()->startOfMonth());
 
         $this->receivables = (clone $query)->where('type', 'income')->get();
-        $this->payables = (clone $query)->where('type', 'expense')->get();
+        $this->payables    = (clone $query)->where('type', 'expense')->get();
 
         $query = match ($this->selectedTab) {
-            'all' => $query,
+            'all'        => $query,
             'receivable' => $query->where('type', 'income'),
-            'payable' => $query->where('type', 'expense'),
+            'payable'    => $query->where('type', 'expense'),
         };
 
         $transactions = $query
+            ->with('category')
             ->orderBy('date')
             ->orderBy('updated_at', 'desc')
             ->paginate(12);

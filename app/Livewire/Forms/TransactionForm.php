@@ -3,33 +3,36 @@
 namespace App\Livewire\Forms;
 
 use App\Models\Transaction;
-use Livewire\Attributes\Validate;
+use Illuminate\Validation\Rule;
 use Livewire\Form;
 
 class TransactionForm extends Form
 {
     public ?Transaction $transaction;
 
-    #[Validate('required|in:income,expense')]
     public $type;
-
-    #[Validate('required|min:0|numeric')]
     public $amount;
-
-    #[Validate('required|string|max:255')]
     public $description;
-
     public $state = true;
-
-    #[Validate('nullable')]
     public $expected_payment_date;
-
-    #[Validate('required|exists:categories,id')]
     public $category_id;
-
-    #[Validate('required|before_or_equal:today')]
     public $date;
 
+    public function rules(): array
+    {
+        return [
+            'type'                  => 'required|in:income,expense',
+            'amount'                => 'required|min:0|numeric',
+            'description'           => 'required|string|max:255',
+            'expected_payment_date' => 'nullable',
+            'date'                  => 'required|before_or_equal:today',
+            // Validates existence AND ownership — prevents assigning another user's category
+            'category_id'           => [
+                'required',
+                Rule::exists('categories', 'id')->where('user_id', auth()->id()),
+            ],
+        ];
+    }
 
     public function setTransaction(Transaction $transaction)
     {
@@ -38,7 +41,7 @@ class TransactionForm extends Form
         $this->amount = $transaction->amount;
         $this->description = $transaction->description;
         $this->date = $transaction->formatted_date;
-        $this->category_id = $transaction->category->id;
+        $this->category_id = $transaction->category_id;
         $this->state = $transaction->state === 'paid';
         $this->expected_payment_date = $transaction->formatted_expected_payment_date;
     }

@@ -12,11 +12,13 @@ class CategoryEdit extends Component
 
     public function mount(Category $category)
     {
+        $this->authorize('update', $category);
         $this->form->setCategory($category);
     }
 
     public function edit()
     {
+        $this->authorize('update', $this->form->categorySelected);
         $this->form->update();
         session()->flash('message', 'Categoría actualizada con exito');
         $this->redirect(route('category.index'), navigate: true);

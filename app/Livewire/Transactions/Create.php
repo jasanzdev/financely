@@ -13,7 +13,7 @@ class Create extends Component
 
     public function mount()
     {
-        $this->categories = Category::all()->where('user_id', auth()->id());
+        $this->categories = Category::where('user_id', auth()->id())->get();
     }
 
     public function save()

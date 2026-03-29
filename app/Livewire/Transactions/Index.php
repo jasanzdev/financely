@@ -15,13 +15,15 @@ class Index extends Component
         $this->transactions = Transaction::take(8)
             ->where('user_id', $user)
             ->where('state', 'paid')
-            ->whereMonth('date', date('m'))
+            ->where('date', '>=', now()->startOfMonth())
+            ->where('date', '<', now()->addMonth()->startOfMonth())
             ->orderBy('date', 'desc')
             ->get();
     }
 
     public function delete(Transaction $transaction)
     {
+        $this->authorize('delete', $transaction);
         $transaction->delete();
 
         session()->flash('message', 'El registo ha sido eliminado del sistema.');

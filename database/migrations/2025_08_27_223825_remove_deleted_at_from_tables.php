@@ -11,15 +11,19 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        DB::table('transactions')->whereNotNull('deleted_at')->delete();
-        DB::table('categories')->whereNotNull('deleted_at')->delete();
+        if (Schema::hasColumn('transactions', 'deleted_at')) {
+            DB::table('transactions')->whereNotNull('deleted_at')->delete();
+            Schema::table('transactions', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
 
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
-        Schema::table('categories', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-        });
+        if (Schema::hasColumn('categories', 'deleted_at')) {
+            DB::table('categories')->whereNotNull('deleted_at')->delete();
+            Schema::table('categories', function (Blueprint $table) {
+                $table->dropSoftDeletes();
+            });
+        }
     }
 
     /**

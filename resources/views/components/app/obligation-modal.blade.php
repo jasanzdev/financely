@@ -103,21 +103,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex w-full max-w-xs flex-col gap-1 text-on-surface dark:text-on-surface-dark">
-                    <label for="category" class="w-fit pl-0.5 text-sm">Categoría</label>
-                    <input id="category"
-                           type="text"
-                           required
-                           class="w-full rounded-radius border border-outline bg-surface-alt px-2 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 dark:border-outline-dark dark:bg-surface-dark-alt/50 dark:focus-visible:outline-primary-dark"
-                           name="category"
-                           placeholder="Vivienda, Servicios, Seguros, etc."
-                           autocomplete="category"
-                           wire:model="form.category"
-                    />
-                    <div>
-                        @error('form.category') <span class="error">{{ $message }}</span> @enderror
-                    </div>
-                </div>
             </form>
         </div>
         <!-- Dialog Footer -->
