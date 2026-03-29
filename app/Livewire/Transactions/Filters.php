@@ -4,6 +4,7 @@ namespace App\Livewire\Transactions;
 
 use App\Models\Category;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -26,7 +27,7 @@ class Filters extends Component
 
     public function mount(): void
     {
-        $this->selectedYear = now()->year;
+        $this->selectedYear  = now()->year;
         $this->selectedMonth = now()->month;
         $this->latestDays(7);
         $this->categories = Category::where('user_id', auth()->id())->get();
@@ -54,6 +55,7 @@ class Filters extends Component
 
     public function delete(Transaction $transaction)
     {
+        $this->authorize('delete', $transaction);
         $transaction->delete();
 
         session()->flash('message', 'El registo ha sido eliminado del sistema.');
@@ -63,15 +65,22 @@ class Filters extends Component
     {
         $query = Transaction::where('user_id', auth()->id())->where('state', 'paid');
 
+        // Use explicit date ranges instead of MONTH()/YEAR() functions so MySQL
+        // can perform a range scan on the (user_id, state, date) composite index.
         $query = match ($this->selectedTab) {
-            'days' => $query->where('date', '>=', now()
-                ->subDays(7)),
-            'current-month' => $query->whereMonth('date', now()->month)
-                ->whereYear('date', $this->selectedYear),
-            'previous-month' => $query->whereMonth('date', now()->subMonth()->month)
-                ->whereYear('date', $this->selectedYear),
-            'historical' => $query->whereMonth('date', $this->selectedMonth)
-                ->whereYear('date', $this->selectedYear),
+            'days' => $query->where('date', '>=', now()->subDays(7)),
+
+            'current-month' => $query
+                ->where('date', '>=', Carbon::create($this->selectedYear, now()->month, 1))
+                ->where('date', '<',  Carbon::create($this->selectedYear, now()->month, 1)->addMonthNoOverflow()),
+
+            'previous-month' => $query
+                ->where('date', '>=', Carbon::create($this->selectedYear, now()->subMonthNoOverflow()->month, 1))
+                ->where('date', '<',  Carbon::create($this->selectedYear, now()->subMonthNoOverflow()->month, 1)->addMonthNoOverflow()),
+
+            'historical' => $query
+                ->where('date', '>=', Carbon::create($this->selectedYear, $this->selectedMonth, 1))
+                ->where('date', '<',  Carbon::create($this->selectedYear, $this->selectedMonth, 1)->addMonthNoOverflow()),
         };
 
         if ($this->selectedCategory && $this->selectedCategory !== 'all')
@@ -80,10 +89,18 @@ class Filters extends Component
         if ($this->showType !== 'all')
             $query->where('type', $this->showType);
 
-        $this->expenses = (clone $query)->where('type', 'expense')->sum('amount');
-        $this->incomes = (clone $query)->where('type', 'income')->sum('amount');
+        $totals = (clone $query)
+            ->selectRaw('
+                SUM(CASE WHEN type = "income"  THEN amount ELSE 0 END) as total_income,
+                SUM(CASE WHEN type = "expense" THEN amount ELSE 0 END) as total_expense
+            ')
+            ->first();
+
+        $this->incomes  = $totals->total_income  ?? 0;
+        $this->expenses = $totals->total_expense ?? 0;
 
         $transactions = $query
+            ->with('category')
             ->orderBy('date', 'desc')
             ->orderBy('updated_at', 'desc')
             ->paginate(12);

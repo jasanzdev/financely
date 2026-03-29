@@ -79,10 +79,6 @@
                                     </svg>
                                     Dia {{ $obligation->limit_day }}
                                 </span>
-                                <span
-                                    class="bg-neutral-100 dark:bg-neutral-700 border border-neutral-300 dark:border-neutral-600 rounded-full px-2 py-0.5 text-xs">
-                                    {{ $obligation->category }}
-                                </span>
                             </div>
                         </div>
                         <div class="flex items-center justify-end gap-2 sm:gap-3 w-full">

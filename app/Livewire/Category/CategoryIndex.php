@@ -17,7 +17,9 @@ class CategoryIndex extends Component
 
     public function delete(Category $category)
     {
-        if (count($category->transactions()->get()) > 0) {
+        $this->authorize('delete', $category);
+
+        if ($category->transactions()->exists()) {
             session()->flash('message', 'No se ha podido eliminar la categoría, mueva las transacciones existentes');
             $this->redirect(route('category.index'), navigate: true);
             return;

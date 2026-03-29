@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Obligation;
 use App\Models\Transaction;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
 
@@ -14,13 +15,9 @@ class ObligationForm extends Form
     public ?Obligation $obligation = null;
 
     public string $name = '';
-
     public float $amount = 0.0;
-
     public string $description = '';
     public int $limit_day = 0;
-
-    public string $category = '';
     public bool $is_active = true;
 
     public function rules(): array
@@ -31,22 +28,20 @@ class ObligationForm extends Form
                     ->where('user_id', auth()->id())
                     ->ignore($this->obligation?->id),
             ],
-            'category' => ['required', 'string', 'min:3', 'max:50'],
-            'amount' => ['required', 'numeric', 'min:1'],
+            'amount'      => ['required', 'numeric', 'min:1'],
             'description' => ['required', 'string', 'min:5', 'max:255'],
-            'limit_day' => ['required', 'integer', 'min:1'],
+            'limit_day'   => ['required', 'integer', 'min:1', 'max:28'],
         ];
     }
 
     public function setObligation(Obligation $obligation): void
     {
-        $this->obligation = $obligation;
-        $this->name = $obligation->name;
-        $this->amount = $obligation->amount;
-        $this->description = $obligation->description;
-        $this->limit_day = $obligation->limit_day;
-        $this->category = $obligation->category;
-        $this->is_active = $obligation->is_active;
+        $this->obligation   = $obligation;
+        $this->name         = $obligation->name;
+        $this->amount       = $obligation->amount;
+        $this->description  = $obligation->description;
+        $this->limit_day    = $obligation->limit_day;
+        $this->is_active    = $obligation->is_active;
     }
 
     public function store()
@@ -56,63 +51,50 @@ class ObligationForm extends Form
         return Obligation::create($validated);
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
-        $category = Category::firstOrCreate(
-            ['slug' => 'obligaciones-mensuales'],
-            [
-                'category' => 'Obligaciones Mensuales',
-                'description' => 'Pagos fijos mensuales',
-                'user_id' => auth()->id()
-            ]
-        );
-        $transactions = Transaction::where('user_id', auth()->id())
+
+        $category = $this->resolveObligationsCategory();
+        $oldName  = $this->obligation->name;
+
+        $this->obligation->update($this->all());
+
+        Transaction::where('user_id', auth()->id())
             ->where('category_id', $category->id)
             ->where('state', 'pending')
-            ->where('description', $this->obligation->name)
-            ->get();
-        $this->obligation->update($this->all());
-        $expected_payment_date = Carbon::today()->setDay($this->limit_day);
-        foreach ($transactions as $transaction) {
-            $transaction->update([
-                'amount' => $this->amount,
-                'description' => $this->name,
-                'expected_payment_date' => $expected_payment_date,
+            ->where('description', $oldName)
+            ->update([
+                'amount'                => $this->amount,
+                'description'           => $this->name,
+                'expected_payment_date' => Carbon::today()->setDay($this->limit_day),
             ]);
-        }
     }
 
     public function createTransactions(Obligation $obligation): void
     {
-        $category = Category::where('slug', 'obligaciones-mensuales')
-            ->where('user_id', auth()->id())
-            ->first();
+        $category    = $this->resolveObligationsCategory();
+        $start_month = now()->day >= $obligation->limit_day ? now()->month + 1 : now()->month;
 
-        if (!$category) {
-            $category = Category::create(
-                [
-                    'category' => 'Obligaciones Mensuales',
-                    'description' => 'Pagos fijos mensuales',
-                    'user_id' => auth()->id()
-                ]
-            );
+        $rows = [];
+        for ($month = $start_month; $month <= 12; $month++) {
+            $rows[] = [
+                'id'                    => (string) Str::uuid(),
+                'type'                  => 'expense',
+                'amount'                => $obligation->amount,
+                'description'           => $obligation->name,
+                'state'                 => 'pending',
+                'expected_payment_date' => Carbon::today()->setMonth($month)->setDay($obligation->limit_day),
+                'date'                  => Carbon::today()->setMonth($month),
+                'user_id'               => auth()->id(),
+                'category_id'           => $category->id,
+                'created_at'            => now(),
+                'updated_at'            => now(),
+            ];
         }
 
-        $start_month = now()->day > $obligation->limit_day ? now()->month + 1 : now()->month;
-        for ($month = $start_month; $month <= 12; $month++) {
-            $date = Carbon::today()->setMonth($month);
-            $expected_payment_date = Carbon::today()->setMonth($month)->setDay($obligation->limit_day);
-            Transaction::create([
-                'type' => 'expense',
-                'amount' => $obligation->amount,
-                'description' => $obligation->name,
-                'state' => 'pending',
-                'expected_payment_date' => $expected_payment_date,
-                'date' => $date,
-                'user_id' => auth()->id(),
-                'category_id' => $category->id,
-            ]);
+        if (!empty($rows)) {
+            Transaction::insert($rows);
         }
     }
 
@@ -121,13 +103,28 @@ class ObligationForm extends Form
         $category = Category::where('slug', 'obligaciones-mensuales')
             ->where('user_id', auth()->id())
             ->first();
-        $transactions = Transaction::where('user_id', auth()->id())
+
+        if (!$category) {
+            return;
+        }
+
+        Transaction::where('user_id', auth()->id())
             ->where('category_id', $category->id)
             ->where('state', 'pending')
             ->where('description', $obligation->name)
-            ->get();
-        foreach ($transactions as $transaction) {
-            $transaction->delete();
-        }
+            ->delete();
+    }
+
+    // Finds or creates the "Obligaciones Mensuales" category for the current user.
+    private function resolveObligationsCategory(): Category
+    {
+        return Category::firstOrCreate(
+            ['slug' => 'obligaciones-mensuales', 'user_id' => auth()->id()],
+            [
+                'category'    => 'Obligaciones Mensuales',
+                'description' => 'Pagos fijos mensuales',
+                'user_id'     => auth()->id(),
+            ]
+        );
     }
 }

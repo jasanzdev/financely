@@ -19,7 +19,9 @@ class MonthlyBillings extends Component
     public function openModal($obligationId = null)
     {
         if (!is_null($obligationId)) {
-            $obligation = Obligation::find($obligationId);
+            $obligation = Obligation::where('id', $obligationId)
+                ->where('user_id', auth()->id())
+                ->firstOrFail();
             $this->form->setObligation($obligation);
         }
         $this->obligationModalIsOpen = true;
@@ -42,6 +44,7 @@ class MonthlyBillings extends Component
 
     public function edit()
     {
+        $this->authorize('update', $this->form->obligation);
         $this->form->update();
         session()->flash('message', 'Tu obligación ha sido modificada correctamente.');
         $this->obligationModalIsOpen = false;
@@ -50,6 +53,7 @@ class MonthlyBillings extends Component
 
     public function changeStatus(Obligation $obligation)
     {
+        $this->authorize('update', $obligation);
         $isActive = $obligation->is_active;
         $isActive
             ? $this->form->removeTransactions($obligation)
@@ -61,6 +65,7 @@ class MonthlyBillings extends Component
 
     public function delete(Obligation $obligation)
     {
+        $this->authorize('delete', $obligation);
         $this->form->removeTransactions($obligation);
         $obligation->delete();
         session()->flash('message', 'Se ha eliminado la obligación y tus cuentas por pagar relacionadas.');
