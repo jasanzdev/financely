@@ -16,7 +16,11 @@ class Category extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['category', 'description', 'slug', 'user_id'];
+    protected $fillable = ['category', 'description', 'slug', 'is_active', 'user_id'];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
 
     /**
      * The "booted" method of the model.

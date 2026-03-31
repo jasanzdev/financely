@@ -44,11 +44,23 @@
                                     class="bg-gray-200 dark:bg-neutral-700 text-gray-700 dark:text-gray-200 text-xs font-medium px-2.5 py-1 rounded-full border border-gray-300 dark:border-neutral-600">
                                     /{{ $category->slug }}
                                 </span>
+                                <span
+                                    class="text-xs font-medium px-2.5 py-1 rounded-full border {{ $category->is_active ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-300 dark:border-green-700' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-300 dark:border-red-700' }}">
+                                    {{ $category->is_active ? 'Activa' : 'Inactiva' }}
+                                </span>
                             </div>
                         </div>
 
                         <!-- Actions -->
                         <div class="flex justify-end items-center gap-3 w-full sm:w-auto mt-3 sm:mt-0">
+                            <button
+                                wire:click.prevent="toggleActive('{{ $category->id }}')"
+                                wire:confirm="¿Estás seguro que desea {{ $category->is_active ? 'desactivar' : 'activar' }} esta categoría?"
+                                class="py-1.5 px-3 text-xs border rounded-lg cursor-pointer transition-colors duration-200 hover:bg-neutral-200 dark:hover:bg-neutral-700 {{ $category->is_active ? 'border-red-400 text-red-600 dark:text-red-400' : 'border-green-500 text-green-600 dark:text-green-400' }}"
+                                type="button"
+                            >
+                                {{ $category->is_active ? 'Desactivar' : 'Activar' }}
+                            </button>
                             <a
                                 href="{{ route('category.edit', $category) }}" wire:navigate
                                 class="p-2 rounded-lg border border-neutral-300 dark:border-neutral-600 shadow-lg hover:bg-neutral-200 dark:hover:bg-neutral-700"
