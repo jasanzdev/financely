@@ -4,6 +4,7 @@ namespace App\Livewire\Obligations;
 
 use App\Livewire\Forms\ObligationForm;
 use App\Models\Obligation;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class MonthlyBillings extends Component
@@ -35,8 +36,10 @@ class MonthlyBillings extends Component
 
     public function save()
     {
-        $obligation = $this->form->store();
-        $this->form->createTransactions($obligation);
+        DB::transaction(function () {
+            $obligation = $this->form->store();
+            $this->form->createTransactions($obligation);
+        });
         $this->obligationModalIsOpen = false;
         session()->flash('message', 'Se ha creado una nueva obligación y sus cuentas por pagar cada mes.');
         $this->form->reset();
@@ -55,19 +58,26 @@ class MonthlyBillings extends Component
     {
         $this->authorize('update', $obligation);
         $isActive = $obligation->is_active;
-        $isActive
-            ? $this->form->removeTransactions($obligation)
-            : $this->form->createTransactions($obligation);
 
-        $obligation->update(['is_active' => !$isActive]);
+        DB::transaction(function () use ($obligation, $isActive) {
+            $isActive
+                ? $this->form->removeTransactions($obligation)
+                : $this->form->createTransactions($obligation);
+            $obligation->update(['is_active' => !$isActive]);
+        });
+
         session()->flash('message', 'Se ha ' . ($isActive ? 'desactivado' : 'activado') . ' tu obligación.');
     }
 
     public function delete(Obligation $obligation)
     {
         $this->authorize('delete', $obligation);
-        $this->form->removeTransactions($obligation);
-        $obligation->delete();
+
+        DB::transaction(function () use ($obligation) {
+            $this->form->removeTransactions($obligation);
+            $obligation->delete();
+        });
+
         session()->flash('message', 'Se ha eliminado la obligación y tus cuentas por pagar relacionadas.');
     }
     

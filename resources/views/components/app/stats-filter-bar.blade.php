@@ -60,6 +60,15 @@
                 </div>
                 <!-- Dialog Body -->
                 <div class="px-4 py-8 space-y-6">
+                    <div class="relative flex w-full max-w-xs flex-col gap-1 text-on-surface dark:text-on-surface-dark">
+                        <label for="search" class="w-fit pl-0.5 text-sm">Buscar</label>
+                        <input id="search"
+                               type="text"
+                               wire:model.live.debounce.300ms="search"
+                               placeholder="Buscar por descripción..."
+                               class="w-full rounded-radius border border-outline bg-surface-alt px-4 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 dark:border-outline-dark dark:bg-surface-dark-alt/50 dark:focus-visible:outline-primary-dark"/>
+                    </div>
+
                     <div
                         class="relative flex items-center w-full max-w-xs flex-col gap-1 text-on-surface dark:text-on-surface-dark">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"

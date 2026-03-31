@@ -12,7 +12,8 @@ class Index extends Component
     public function mount()
     {
         $user = auth()->id();
-        $this->transactions = Transaction::take(8)
+        $this->transactions = Transaction::with('category')
+            ->take(8)
             ->where('user_id', $user)
             ->where('state', 'paid')
             ->where('date', '>=', now()->startOfMonth())
@@ -26,7 +27,7 @@ class Index extends Component
         $this->authorize('delete', $transaction);
         $transaction->delete();
 
-        session()->flash('message', 'El registo ha sido eliminado del sistema.');
+        session()->flash('message', 'El registro ha sido eliminado del sistema.');
     }
 
     public function render()

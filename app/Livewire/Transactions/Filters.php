@@ -24,6 +24,7 @@ class Filters extends Component
     public float $expenses = 0;
 
     public string $showType = 'all';
+    public string $search = '';
 
     public function mount(): void
     {
@@ -53,12 +54,17 @@ class Filters extends Component
         $this->resetPage();
     }
 
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
+
     public function delete(Transaction $transaction)
     {
         $this->authorize('delete', $transaction);
         $transaction->delete();
 
-        session()->flash('message', 'El registo ha sido eliminado del sistema.');
+        session()->flash('message', 'El registro ha sido eliminado del sistema.');
     }
 
     public function render(): View
@@ -88,6 +94,9 @@ class Filters extends Component
 
         if ($this->showType !== 'all')
             $query->where('type', $this->showType);
+
+        if ($this->search !== '')
+            $query->where('description', 'like', '%' . $this->search . '%');
 
         $totals = (clone $query)
             ->selectRaw('
