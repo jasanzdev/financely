@@ -15,6 +15,13 @@ class CategoryIndex extends Component
         $this->categories = Category::where('user_id', auth()->id())->get();
     }
 
+    public function toggleActive(Category $category)
+    {
+        $this->authorize('update', $category);
+        $category->update(['is_active' => !$category->is_active]);
+        $this->categories = Category::where('user_id', auth()->id())->get();
+    }
+
     public function delete(Category $category)
     {
         $this->authorize('delete', $category);
