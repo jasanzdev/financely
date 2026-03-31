@@ -36,7 +36,7 @@ test('deleting an obligation removes its pending transactions', function () {
         ->assertHasNoErrors();
 
     $this->assertDatabaseMissing('obligations', ['id' => $obligation->id]);
-    $this->assertDatabaseMissing('transactions', [
+    $this->assertSoftDeleted('transactions', [
         'user_id'     => $user->id,
         'description' => 'Alquiler',
         'state'       => 'pending',
@@ -64,7 +64,7 @@ test('deactivating an obligation removes its pending transactions', function () 
         ->assertHasNoErrors();
 
     $this->assertDatabaseHas('obligations', ['id' => $obligation->id, 'is_active' => false]);
-    $this->assertDatabaseMissing('transactions', [
+    $this->assertSoftDeleted('transactions', [
         'user_id'     => $user->id,
         'description' => 'Seguro',
         'state'       => 'pending',

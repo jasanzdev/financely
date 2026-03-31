@@ -22,7 +22,7 @@ class TransactionForm extends Form
     {
         return [
             'type'                  => 'required|in:income,expense',
-            'amount'                => 'required|min:0|numeric',
+            'amount'                => 'required|numeric|min:0.01',
             'description'           => 'required|string|max:255',
             'expected_payment_date' => 'nullable',
             'date'                  => 'required|before_or_equal:today',

@@ -34,7 +34,7 @@ class CategoryIndex extends Component
 
         $category->delete();
 
-        session()->flash('message', 'El registo ha sido eliminado del sistema.');
+        session()->flash('message', 'El registro ha sido eliminado del sistema.');
 
         $this->redirect(route('category.index'), navigate: true);
     }

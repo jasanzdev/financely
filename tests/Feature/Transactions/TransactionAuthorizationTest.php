@@ -61,7 +61,7 @@ test('owner can delete transaction from index', function () {
         ->call('delete', $transaction->id)
         ->assertHasNoErrors();
 
-    $this->assertDatabaseMissing('transactions', ['id' => $transaction->id]);
+    $this->assertSoftDeleted('transactions', ['id' => $transaction->id]);
 });
 
 test('other user cannot delete transaction from index', function () {
@@ -93,7 +93,7 @@ test('owner can delete transaction from filters', function () {
         ->call('delete', $transaction->id)
         ->assertHasNoErrors();
 
-    $this->assertDatabaseMissing('transactions', ['id' => $transaction->id]);
+    $this->assertSoftDeleted('transactions', ['id' => $transaction->id]);
 });
 
 test('other user cannot delete transaction from filters', function () {

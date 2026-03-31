@@ -41,7 +41,7 @@ class PendingTransactions extends Component
         $this->authorize('delete', $transaction);
         $transaction->delete();
 
-        session()->flash('message', 'El registo ha sido eliminado del sistema.');
+        session()->flash('message', 'El registro ha sido eliminado del sistema.');
     }
 
     public function render()

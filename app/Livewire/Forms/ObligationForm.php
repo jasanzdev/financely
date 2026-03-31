@@ -6,12 +6,15 @@ use App\Models\Category;
 use App\Models\Obligation;
 use App\Models\Transaction;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
 
 class ObligationForm extends Form
 {
+    private const OBLIGATIONS_CATEGORY_SLUG = 'obligaciones-mensuales';
+
     public ?Obligation $obligation = null;
 
     public string $name = '';
@@ -55,20 +58,22 @@ class ObligationForm extends Form
     {
         $this->validate();
 
-        $category = $this->resolveObligationsCategory();
-        $oldName  = $this->obligation->name;
+        DB::transaction(function () {
+            $category = $this->resolveObligationsCategory();
+            $oldName  = $this->obligation->name;
 
-        $this->obligation->update($this->all());
+            $this->obligation->update($this->all());
 
-        Transaction::where('user_id', auth()->id())
-            ->where('category_id', $category->id)
-            ->where('state', 'pending')
-            ->where('description', $oldName)
-            ->update([
-                'amount'                => $this->amount,
-                'description'           => $this->name,
-                'expected_payment_date' => Carbon::today()->setDay($this->limit_day),
-            ]);
+            Transaction::where('user_id', auth()->id())
+                ->where('category_id', $category->id)
+                ->where('state', 'pending')
+                ->where('description', $oldName)
+                ->update([
+                    'amount'                => $this->amount,
+                    'description'           => $this->name,
+                    'expected_payment_date' => Carbon::today()->setDay($this->limit_day),
+                ]);
+        });
     }
 
     public function createTransactions(Obligation $obligation): void
@@ -100,7 +105,7 @@ class ObligationForm extends Form
 
     public function removeTransactions(Obligation $obligation): void
     {
-        $category = Category::where('slug', 'obligaciones-mensuales')
+        $category = Category::where('slug', self::OBLIGATIONS_CATEGORY_SLUG)
             ->where('user_id', auth()->id())
             ->first();
 
@@ -119,7 +124,7 @@ class ObligationForm extends Form
     private function resolveObligationsCategory(): Category
     {
         return Category::firstOrCreate(
-            ['slug' => 'obligaciones-mensuales', 'user_id' => auth()->id()],
+            ['slug' => self::OBLIGATIONS_CATEGORY_SLUG, 'user_id' => auth()->id()],
             [
                 'category'    => 'Obligaciones Mensuales',
                 'description' => 'Pagos fijos mensuales',
