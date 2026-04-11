@@ -20,8 +20,13 @@ class ForgotPassword extends Component
             'email' => ['required', 'string', 'email'],
         ]);
 
-        Password::sendResetLink($this->only('email'));
+        $status = Password::sendResetLink($this->only('email'));
 
-        session()->flash('status', __('Se enviará un enlace de restablecimiento si la cuenta existe.'));
+        if ($status !== Password::RESET_LINK_SENT) {
+            $this->addError('email', __($status));
+            return;
+        }
+
+        session()->flash('status', __($status));
     }
 }

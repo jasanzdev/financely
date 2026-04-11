@@ -14,7 +14,11 @@
             required
             autofocus
             placeholder="email@example.com"
+            :invalid="$errors->has('email')"
         />
+        @error('email')
+            <flux:error>{{ $message }}</flux:error>
+        @enderror
 
         <flux:button variant="primary" type="submit"
                      class="w-full">{{ __('Enlace de restablecimiento de contraseña') }}</flux:button>
