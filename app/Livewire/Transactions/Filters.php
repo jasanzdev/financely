@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Transactions;
 
+use App\Enums\TransactionState;
+use App\Enums\TransactionType;
 use App\Models\Category;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -75,7 +77,7 @@ class Filters extends Component
 
     public function render(): View
     {
-        $query = Transaction::where('user_id', auth()->id())->where('state', 'paid');
+        $query = Transaction::where('user_id', auth()->id())->where('state', TransactionState::Paid);
 
         // Use explicit date ranges instead of MONTH()/YEAR() functions so MySQL
         // can perform a range scan on the (user_id, state, date) composite index.
@@ -105,7 +107,7 @@ class Filters extends Component
         }
 
         if ($this->showType !== 'all') {
-            $query->where('type', $this->showType);
+            $query->where('type', TransactionType::from($this->showType));
         }
 
         if ($this->search !== '') {

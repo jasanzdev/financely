@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Forms;
 
+use App\Enums\TransactionState;
+use App\Enums\TransactionType;
 use App\Models\Category;
 use App\Models\Obligation;
 use App\Models\Transaction;
@@ -71,7 +73,7 @@ class ObligationForm extends Form
 
             Transaction::where('user_id', auth()->id())
                 ->where('category_id', $category->id)
-                ->where('state', 'pending')
+                ->where('state', TransactionState::Pending)
                 ->where('description', $oldName)
                 ->update([
                     'amount' => $this->amount,
@@ -106,10 +108,10 @@ class ObligationForm extends Form
             // placing transactions in the wrong month.
             $rows[] = [
                 'id' => (string) Str::uuid(),
-                'type' => 'expense',
+                'type' => TransactionType::Expense->value,
                 'amount' => $obligation->amount,
                 'description' => $obligation->name,
-                'state' => 'pending',
+                'state' => TransactionState::Pending->value,
                 'expected_payment_date' => Carbon::create($year, $month, $obligation->limit_day),
                 'date' => Carbon::create($year, $month, 1),
                 'user_id' => auth()->id(),
@@ -136,7 +138,7 @@ class ObligationForm extends Form
 
         Transaction::where('user_id', auth()->id())
             ->where('category_id', $category->id)
-            ->where('state', 'pending')
+            ->where('state', TransactionState::Pending)
             ->where('description', $obligation->name)
             ->delete();
     }

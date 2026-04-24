@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\TransactionState;
+use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +20,29 @@ class Transaction extends Model
         'amount' => 'decimal:2',
         'date' => 'date',
         'expected_payment_date' => 'date',
+        'type' => TransactionType::class,
+        'state' => TransactionState::class,
     ];
+
+    public function isIncome(): bool
+    {
+        return $this->type === TransactionType::Income;
+    }
+
+    public function isExpense(): bool
+    {
+        return $this->type === TransactionType::Expense;
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->state === TransactionState::Paid;
+    }
+
+    public function isPending(): bool
+    {
+        return $this->state === TransactionState::Pending;
+    }
 
     public function user(): BelongsTo
     {
@@ -42,7 +66,7 @@ class Transaction extends Model
 
     public function getIsPaymentFutureAttribute()
     {
-        if (!$this->expected_payment_date) {
+        if (! $this->expected_payment_date) {
             return null;
         }
 

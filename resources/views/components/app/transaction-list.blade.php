@@ -8,8 +8,8 @@
         <li class="flex flex-col gap-3 p-3 sm:p-4 rounded-lg bg-surface-alt shadow border dark:border-neutral-700 dark:bg-surface-dark-alt/50 hover:shadow-xs dark:hover:shadow-neutral-600 transition-shadow duration-200">
             <div class="flex items-center w-full sm:w-auto mb-3 sm:mb-0">
                 <div
-                    class="rounded-full p-2 mr-3 {{ $transaction->type === 'income' ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30' }}">
-                    @if($transaction->type === 'income')
+                    class="rounded-full p-2 mr-3 {{ $transaction->isIncome() ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30' }}">
+                    @if($transaction->isIncome())
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"
                              class="w-5 h-5 text-green-700 dark:text-green-400">
                             <path fill-rule="evenodd"
@@ -44,9 +44,9 @@
             </div>
             <div class="flex items-center justify-end w-full sm:w-auto gap-3 mt-2 sm:mt-0">
                 <div
-                    class="text-base sm:text-lg font-semibold {{ $transaction->type === 'income' ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
+                    class="text-base sm:text-lg font-semibold {{ $transaction->isIncome() ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
                         <span>
-                            {{ $transaction->type === 'income' ? '+' : '-' }} ${{ number_format($transaction->amount, 2, ',', '.') }}</span>
+                            {{ $transaction->isIncome() ? '+' : '-' }} ${{ number_format($transaction->amount, 2, ',', '.') }}</span>
                 </div>
                 <a href="{{ route('transaction.edit', [$transaction, 'from' => $redirectTo]) }}"
                    wire:navigate

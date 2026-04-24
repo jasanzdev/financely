@@ -10,9 +10,9 @@ class CategoryForm extends Form
 {
     public ?Category $categorySelected = null;
 
-    public string|null $category = '';
+    public ?string $category = '';
 
-    public string|null $description = '';
+    public ?string $description = '';
 
     public function rules(): array
     {
@@ -29,8 +29,8 @@ class CategoryForm extends Form
                 'nullable',
                 'string',
                 'min:5',
-                'max:255'
-            ]
+                'max:255',
+            ],
         ];
     }
 

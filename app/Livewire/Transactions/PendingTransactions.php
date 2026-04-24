@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Transactions;
 
+use App\Enums\TransactionState;
+use App\Enums\TransactionType;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
@@ -12,7 +14,9 @@ class PendingTransactions extends Component
     use WithPagination;
 
     public Collection $receivables;
+
     public Collection $payables;
+
     public string $selectedTab = 'all';
 
     public function selectAll()
@@ -33,7 +37,7 @@ class PendingTransactions extends Component
     public function changeStatus(Transaction $transaction)
     {
         $this->authorize('update', $transaction);
-        $transaction->update(['state' => 'paid', 'expected_payment_date' => null]);
+        $transaction->update(['state' => TransactionState::Paid, 'expected_payment_date' => null]);
     }
 
     public function delete(Transaction $transaction)
@@ -47,16 +51,16 @@ class PendingTransactions extends Component
     public function render()
     {
         $query = Transaction::where('user_id', auth()->id())
-            ->where('state', 'pending')
+            ->where('state', TransactionState::Pending)
             ->where('date', '<', now()->addMonth()->startOfMonth());
 
-        $this->receivables = (clone $query)->where('type', 'income')->get();
-        $this->payables    = (clone $query)->where('type', 'expense')->get();
+        $this->receivables = (clone $query)->where('type', TransactionType::Income)->get();
+        $this->payables = (clone $query)->where('type', TransactionType::Expense)->get();
 
         $query = match ($this->selectedTab) {
-            'all'        => $query,
-            'receivable' => $query->where('type', 'income'),
-            'payable'    => $query->where('type', 'expense'),
+            'all' => $query,
+            'receivable' => $query->where('type', TransactionType::Income),
+            'payable' => $query->where('type', TransactionType::Expense),
         };
 
         $transactions = $query

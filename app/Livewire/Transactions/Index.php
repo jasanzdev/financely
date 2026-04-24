@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Transactions;
 
+use App\Enums\TransactionState;
 use App\Models\Transaction;
 use Livewire\Component;
 
@@ -15,7 +16,7 @@ class Index extends Component
         $this->transactions = Transaction::with('category')
             ->take(8)
             ->where('user_id', $user)
-            ->where('state', 'paid')
+            ->where('state', TransactionState::Paid)
             ->where('date', '>=', now()->startOfMonth())
             ->where('date', '<', now()->addMonth()->startOfMonth())
             ->orderBy('date', 'desc')
