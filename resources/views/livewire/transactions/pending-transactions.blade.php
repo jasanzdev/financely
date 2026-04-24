@@ -82,8 +82,8 @@
                         {{ $transaction->is_payment_future === false ? 'border-2 border-red-300 dark:border-red-600 animate-pulse' : '' }}">
                         <div class="flex items-center w-full sm:w-auto mb-2 sm:mb-0">
                             <div
-                                class="rounded-full p-2 mr-2 sm:mr-3 {{ $transaction->type === 'income' ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30' }}">
-                                @if ($transaction->type === 'income')
+                                class="rounded-full p-2 mr-2 sm:mr-3 {{ $transaction->isIncome() ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30' }}">
+                                @if ($transaction->isIncome())
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"
                                          class="w-4 h-4 sm:w-5 sm:h-5 text-green-700 dark:text-green-400">
                                         <path fill-rule="evenodd"
@@ -131,15 +131,15 @@
                                        wire:confirm="Desea marcar como pagada esta transacción?"/>
                                 <span
                                     class="trancking-wide text-sm font-medium text-on-surface peer-checked:text-on-surface-strong peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-on-surface-dark dark:peer-checked:text-on-surface-dark-strong">
-                                    {{ $transaction->type === 'income' ? 'Cobrar' : 'Pagar' }}
+                                    {{ $transaction->isIncome() ? 'Cobrar' : 'Pagar' }}
                                 </span>
                                 <div
                                     class="relative h-7 w-12 after:h-6 after:w-6 peer-checked:after:translate-x-5 rounded-full border border-outline bg-surface-alt after:absolute after:bottom-0 after:left-[0.0625rem] after:top-0 after:my-auto after:rounded-full after:bg-on-surface after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:bg-on-primary peer-focus:outline-2 peer-focus:outline-offset-2 peer-focus:outline-outline-strong peer-focus:peer-checked:outline-primary peer-active:outline-offset-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:border-outline-dark dark:bg-surface-dark-alt dark:after:bg-on-surface-dark dark:peer-checked:bg-primary-dark dark:peer-checked:after:bg-on-primary-dark dark:peer-focus:outline-outline-dark-strong dark:peer-focus:peer-checked:outline-primary-dark"
                                     aria-hidden="true"></div>
                             </label>
                             <div
-                                class="text-sm sm:text-base font-semibold {{ $transaction->type === 'income' ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
-                                <span>{{ $transaction->type === 'income' ? '+' : '-' }}
+                                class="text-sm sm:text-base font-semibold {{ $transaction->isIncome() ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
+                                <span>{{ $transaction->isIncome() ? '+' : '-' }}
                                     ${{ number_format($transaction->amount, 2, ',', '.') }}</span>
                             </div>
 

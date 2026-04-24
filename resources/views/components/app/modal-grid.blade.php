@@ -46,8 +46,8 @@
                         <div class="flex flex-col items-start sm:items-center flex-1">
                             <div class="flex items-center w-full sm:w-auto mb-3 sm:mb-0">
                                 <div
-                                    class="rounded-full p-2 mr-3 {{ $transaction->type === 'income' ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30' }}">
-                                    @if($transaction->type === 'income')
+                                    class="rounded-full p-2 mr-3 {{ $transaction->isIncome() ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30' }}">
+                                    @if($transaction->isIncome())
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                              viewBox="0 0 24 24"
                                              class="w-5 h-5 text-green-700 dark:text-green-400">
@@ -101,8 +101,8 @@
                         <div
                             class="flex items-center justify-end w-full sm:w-auto gap-3 mt-2 sm:mt-0">
                             <div
-                                class="text-sm sm:text-base font-semibold {{ $transaction->type === 'income' ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
-                                <span>{{ $transaction->type === 'income' ? '+' : '-' }} ${{ number_format($transaction->amount, 2, ',', '.') }}</span>
+                                class="text-sm sm:text-base font-semibold {{ $transaction->isIncome() ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400' }}">
+                                <span>{{ $transaction->isIncome() ? '+' : '-' }} ${{ number_format($transaction->amount, 2, ',', '.') }}</span>
                             </div>
                             <label for="toggle-{{ $transaction->id }}" class="inline-flex items-center gap-3">
                                 <input id="toggle-{{ $transaction->id }}" type="checkbox" class="peer sr-only"

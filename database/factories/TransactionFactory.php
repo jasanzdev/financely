@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\TransactionState;
+use App\Enums\TransactionType;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -16,10 +18,10 @@ class TransactionFactory extends Factory
         $user = User::factory()->create();
 
         return [
-            'type' => fake()->randomElement(['income', 'expense']),
+            'type' => fake()->randomElement(TransactionType::cases()),
             'amount' => fake()->randomFloat(2, 1, 10000),
             'description' => fake()->sentence(),
-            'state' => 'paid',
+            'state' => TransactionState::Paid,
             'date' => fake()->dateTimeBetween('-1 year', 'today')->format('Y-m-d'),
             'expected_payment_date' => null,
             'user_id' => $user->id,
@@ -30,7 +32,7 @@ class TransactionFactory extends Factory
     public function pending(): static
     {
         return $this->state(fn (array $attributes) => [
-            'state' => 'pending',
+            'state' => TransactionState::Pending,
             'expected_payment_date' => fake()->dateTimeBetween('today', '+3 months')->format('Y-m-d'),
         ]);
     }

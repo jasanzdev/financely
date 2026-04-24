@@ -9,6 +9,7 @@ use Livewire\Component;
 class Create extends Component
 {
     public TransactionForm $form;
+
     public $categories = [];
 
     public function mount()
