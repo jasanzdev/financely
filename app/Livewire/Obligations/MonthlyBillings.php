@@ -11,15 +11,11 @@ class MonthlyBillings extends Component
 {
     public ObligationForm $form;
 
-    public $totalObligation = 0;
-
-    public $countObligation = 0;
-
     public $obligationModalIsOpen = false;
 
     public function openModal($obligationId = null)
     {
-        if (!is_null($obligationId)) {
+        if (! is_null($obligationId)) {
             $obligation = Obligation::where('id', $obligationId)
                 ->where('user_id', auth()->id())
                 ->firstOrFail();
@@ -63,10 +59,10 @@ class MonthlyBillings extends Component
             $isActive
                 ? $this->form->removeTransactions($obligation)
                 : $this->form->createTransactions($obligation);
-            $obligation->update(['is_active' => !$isActive]);
+            $obligation->update(['is_active' => ! $isActive]);
         });
 
-        session()->flash('message', 'Se ha ' . ($isActive ? 'desactivado' : 'activado') . ' tu obligación.');
+        session()->flash('message', 'Se ha '.($isActive ? 'desactivado' : 'activado').' tu obligación.');
     }
 
     public function delete(Obligation $obligation)
@@ -80,14 +76,20 @@ class MonthlyBillings extends Component
 
         session()->flash('message', 'Se ha eliminado la obligación y tus cuentas por pagar relacionadas.');
     }
-    
+
     public function render()
     {
         $obligations = Obligation::where('user_id', auth()->id())->get();
 
-        $this->totalObligation = (clone $obligations)->where('is_active', true)->sum('amount');
-        $this->countObligation = count((clone $obligations)->where('is_active', true));
+        // Collection methods return new collections; no clone needed.
+        // Filter once, then reduce to total and count on the same subset.
+        $activeObligations = $obligations->where('is_active', true);
+        $totalObligation = $activeObligations->sum('amount');
+        $countObligation = $activeObligations->count();
 
-        return view('livewire.obligations.monthly-billings', compact('obligations'));
+        return view(
+            'livewire.obligations.monthly-billings',
+            compact('obligations', 'totalObligation', 'countObligation'),
+        );
     }
 }
