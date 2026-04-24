@@ -29,5 +29,5 @@ test('user only sees their own categories count in the index', function () {
 
     $component = Livewire::actingAs($userA)->test(CategoryIndex::class);
 
-    expect($component->get('categories'))->toHaveCount(2);
+    expect($component->viewData('categories'))->toHaveCount(2);
 });
