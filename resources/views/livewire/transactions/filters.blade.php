@@ -2,7 +2,7 @@
     <div x-on:keydown.right.prevent="$focus.wrap().next()" x-on:keydown.left.prevent="$focus.wrap().previous()"
          class="flex flex-col sm:flex-row gap-2 border-b border-outline dark:border-outline-dark" role="tablist"
          aria-label="tab options">
-        <button x-on:click="$wire.latestDays(7)" x-bind:aria-selected="selectedTab === 'days'"
+        <button x-on:click="$wire.latestDays()" x-bind:aria-selected="selectedTab === 'days'"
                 x-bind:tabindex="selectedTab === 'days' ? '0' : '-1'"
                 x-bind:class="selectedTab === 'days' ? ' font-bold text-secondary border-b-2 dark:border-primary-dark dark:text-primary-dark' : 'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'"
                 class="h-min px-3 py-2 sm:px-4 sm:py-4 text-xs sm:text-sm {{ $selectedTab === 'days' ? 'bg-gradient-to-t from-neutral-200 dark:from-neutral-800 shadow shadow-gray-400 dark:shadow-gray-600' : '' }}"
