@@ -108,3 +108,26 @@ test('other user cannot update a category they do not own', function () {
 
     $this->assertDatabaseHas('categories', ['id' => $category->id, 'category' => 'Original Name']);
 });
+
+// --- Staleness regression ---
+// toggleActive used to mutate the DB and then re-query manually to keep the
+// view in sync. If the manual re-query were ever removed — or if a developer
+// added a similar action without remembering it — the view would show the
+// pre-toggle state until reload. Loading in render() makes this automatic.
+
+test('toggling a category active status reflects in the rendered list without manual refetch', function () {
+    $user = User::factory()->create();
+    $category = Category::factory()->for($user)->create([
+        'category' => 'ToggleTarget',
+        'is_active' => true,
+    ]);
+
+    $component = Livewire::actingAs($user)->test(CategoryIndex::class);
+
+    $component->call('toggleActive', $category->id)
+        ->assertHasNoErrors();
+
+    $rendered = $component->viewData('categories')->firstWhere('id', $category->id);
+
+    expect($rendered->is_active)->toBeFalse();
+});

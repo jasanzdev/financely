@@ -160,3 +160,32 @@ test('other user cannot delete pending transaction', function () {
 
     $this->assertDatabaseHas('transactions', ['id' => $transaction->id]);
 });
+
+// --- Staleness regression ---
+// After delete, the rendered list must not include the deleted transaction.
+// Previously, Index loaded transactions in mount() and delete() only touched
+// the DB, so the view kept showing stale data until a full page reload.
+
+test('index does not show a transaction after it has been deleted', function () {
+    $user = User::factory()->create();
+    $category = Category::factory()->for($user)->create();
+
+    $kept = Transaction::factory()->for($user)->for($category)->create([
+        'state' => 'paid',
+        'date' => now(),
+        'description' => 'kept-after-delete',
+    ]);
+
+    $removed = Transaction::factory()->for($user)->for($category)->create([
+        'state' => 'paid',
+        'date' => now(),
+        'description' => 'removed-after-delete',
+    ]);
+
+    $component = Livewire::actingAs($user)->test(Index::class);
+
+    $component->call('delete', $removed->id)
+        ->assertHasNoErrors()
+        ->assertSee('kept-after-delete')
+        ->assertDontSee('removed-after-delete');
+});

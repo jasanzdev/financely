@@ -3,23 +3,14 @@
 namespace App\Livewire\Category;
 
 use App\Models\Category;
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
 class CategoryIndex extends Component
 {
-    public Collection|null $categories = null;
-
-    public function mount()
-    {
-        $this->categories = Category::where('user_id', auth()->id())->get();
-    }
-
     public function toggleActive(Category $category)
     {
         $this->authorize('update', $category);
-        $category->update(['is_active' => !$category->is_active]);
-        $this->categories = Category::where('user_id', auth()->id())->get();
+        $category->update(['is_active' => ! $category->is_active]);
     }
 
     public function delete(Category $category)
@@ -29,6 +20,7 @@ class CategoryIndex extends Component
         if ($category->transactions()->exists()) {
             session()->flash('message', 'No se ha podido eliminar la categoría, mueva las transacciones existentes');
             $this->redirect(route('category.index'), navigate: true);
+
             return;
         }
 
@@ -41,6 +33,8 @@ class CategoryIndex extends Component
 
     public function render()
     {
-        return view('livewire.category.category-index');
+        $categories = Category::where('user_id', auth()->id())->get();
+
+        return view('livewire.category.category-index', compact('categories'));
     }
 }
