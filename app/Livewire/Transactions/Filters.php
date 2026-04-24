@@ -26,10 +26,6 @@ class Filters extends Component
 
     public ?string $selectedCategory = null;
 
-    public float $incomes = 0;
-
-    public float $expenses = 0;
-
     public string $showType = 'all';
 
     public string $search = '';
@@ -121,8 +117,8 @@ class Filters extends Component
             ')
             ->first();
 
-        $this->incomes = $totals->total_income ?? 0;
-        $this->expenses = $totals->total_expense ?? 0;
+        $incomes = $totals->total_income ?? 0;
+        $expenses = $totals->total_expense ?? 0;
 
         $transactions = $query
             ->with('category')
@@ -130,6 +126,6 @@ class Filters extends Component
             ->orderBy('updated_at', 'desc')
             ->paginate(12);
 
-        return view('livewire.transactions.filters', compact('transactions'));
+        return view('livewire.transactions.filters', compact('transactions', 'incomes', 'expenses'));
     }
 }
