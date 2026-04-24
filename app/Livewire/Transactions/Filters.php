@@ -15,20 +15,26 @@ class Filters extends Component
     use WithPagination;
 
     public string $selectedTab = 'days';
+
     public int $selectedMonth;
+
     public int $selectedYear;
 
     public Collection $categories;
-    public string|null $selectedCategory = null;
+
+    public ?string $selectedCategory = null;
+
     public float $incomes = 0;
+
     public float $expenses = 0;
 
     public string $showType = 'all';
+
     public string $search = '';
 
     public function mount(): void
     {
-        $this->selectedYear  = now()->year;
+        $this->selectedYear = now()->year;
         $this->selectedMonth = now()->month;
         $this->latestDays(7);
         $this->categories = Category::where('user_id', auth()->id())->get();
@@ -78,25 +84,33 @@ class Filters extends Component
 
             'current-month' => $query
                 ->where('date', '>=', Carbon::create($this->selectedYear, now()->month, 1))
-                ->where('date', '<',  Carbon::create($this->selectedYear, now()->month, 1)->addMonthNoOverflow()),
+                ->where('date', '<', Carbon::create($this->selectedYear, now()->month, 1)->addMonthNoOverflow()),
 
             'previous-month' => $query
                 ->where('date', '>=', Carbon::create($this->selectedYear, now()->subMonthNoOverflow()->month, 1))
-                ->where('date', '<',  Carbon::create($this->selectedYear, now()->subMonthNoOverflow()->month, 1)->addMonthNoOverflow()),
+                ->where('date', '<', Carbon::create($this->selectedYear, now()->subMonthNoOverflow()->month, 1)->addMonthNoOverflow()),
 
             'historical' => $query
                 ->where('date', '>=', Carbon::create($this->selectedYear, $this->selectedMonth, 1))
-                ->where('date', '<',  Carbon::create($this->selectedYear, $this->selectedMonth, 1)->addMonthNoOverflow()),
+                ->where('date', '<', Carbon::create($this->selectedYear, $this->selectedMonth, 1)->addMonthNoOverflow()),
+
+            // Defensive fallback: unexpected values (client tampering, stale state,
+            // regression adding a UI tab without a branch here) fall back to the most
+            // restrictive filter — 7 days — which matches the default set by mount().
+            default => $query->where('date', '>=', now()->subDays(7)),
         };
 
-        if ($this->selectedCategory && $this->selectedCategory !== 'all')
+        if ($this->selectedCategory && $this->selectedCategory !== 'all') {
             $query->where('category_id', $this->selectedCategory);
+        }
 
-        if ($this->showType !== 'all')
+        if ($this->showType !== 'all') {
             $query->where('type', $this->showType);
+        }
 
-        if ($this->search !== '')
-            $query->where('description', 'like', '%' . $this->search . '%');
+        if ($this->search !== '') {
+            $query->where('description', 'like', '%'.$this->search.'%');
+        }
 
         $totals = (clone $query)
             ->selectRaw('
@@ -105,7 +119,7 @@ class Filters extends Component
             ')
             ->first();
 
-        $this->incomes  = $totals->total_income  ?? 0;
+        $this->incomes = $totals->total_income ?? 0;
         $this->expenses = $totals->total_expense ?? 0;
 
         $transactions = $query
