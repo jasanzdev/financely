@@ -14,7 +14,7 @@ class Transaction extends Model
 {
     use HasFactory, HasUuids, SoftDeletes;
 
-    protected $fillable = ['type', 'amount', 'description', 'state', 'expected_payment_date', 'date', 'user_id', 'category_id'];
+    protected $fillable = ['type', 'amount', 'description', 'state', 'expected_payment_date', 'date', 'user_id', 'category_id', 'obligation_id'];
 
     protected $casts = [
         'amount' => 'decimal:2',
@@ -52,6 +52,11 @@ class Transaction extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function obligation(): BelongsTo
+    {
+        return $this->belongsTo(Obligation::class);
     }
 
     protected function getFormattedDateAttribute()
