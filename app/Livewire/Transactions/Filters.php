@@ -36,11 +36,11 @@ class Filters extends Component
     {
         $this->selectedYear = now()->year;
         $this->selectedMonth = now()->month;
-        $this->latestDays(7);
+        $this->latestDays();
         $this->categories = Category::where('user_id', auth()->id())->get();
     }
 
-    public function latestDays($days): void
+    public function latestDays(): void
     {
         $this->selectedTab = 'days';
     }

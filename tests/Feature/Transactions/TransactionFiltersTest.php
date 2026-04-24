@@ -99,3 +99,45 @@ test('fallback on unknown selectedTab does not broaden scope beyond 7 days', fun
     $component->assertSee('recent-tx')
         ->assertDontSee('old-tx-outside-window');
 });
+
+// --- latestDays() tab wiring ---
+// Protects the days-tab behavior from drift while the unused $days parameter
+// is removed. The tab must continue to show only transactions within the last
+// 7 days, end-to-end.
+
+test('clicking the days tab filters the render to the last 7 days', function () {
+    $user = User::factory()->create();
+    $category = Category::factory()->for($user)->create();
+
+    Transaction::factory()
+        ->for($user)
+        ->for($category)
+        ->create([
+            'type' => 'income',
+            'amount' => 100,
+            'state' => 'paid',
+            'date' => now()->subDays(3),
+            'description' => 'within-7-days-window',
+        ]);
+
+    Transaction::factory()
+        ->for($user)
+        ->for($category)
+        ->create([
+            'type' => 'income',
+            'amount' => 500,
+            'state' => 'paid',
+            'date' => now()->subDays(30),
+            'description' => 'outside-7-days-window',
+        ]);
+
+    $component = Livewire::actingAs($user)
+        ->test(Filters::class)
+        ->set('selectedTab', 'historical')
+        ->call('latestDays');
+
+    expect($component->get('selectedTab'))->toBe('days');
+    expect((float) $component->get('incomes'))->toBe(100.0);
+    $component->assertSee('within-7-days-window')
+        ->assertDontSee('outside-7-days-window');
+});
