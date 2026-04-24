@@ -56,8 +56,8 @@ test('fallback on unknown selectedTab preserves tenant isolation', function () {
         ->test(Filters::class)
         ->set('selectedTab', 'foo');
 
-    expect((float) $component->get('incomes'))->toBe(0.0);
-    expect((float) $component->get('expenses'))->toBe(0.0);
+    expect((float) $component->viewData('incomes'))->toBe(0.0);
+    expect((float) $component->viewData('expenses'))->toBe(0.0);
     $component->assertDontSee('secret-of-b');
 });
 
@@ -95,7 +95,7 @@ test('fallback on unknown selectedTab does not broaden scope beyond 7 days', fun
         ->test(Filters::class)
         ->set('selectedTab', 'unknown');
 
-    expect((float) $component->get('incomes'))->toBe(100.0);
+    expect((float) $component->viewData('incomes'))->toBe(100.0);
     $component->assertSee('recent-tx')
         ->assertDontSee('old-tx-outside-window');
 });
@@ -137,7 +137,7 @@ test('clicking the days tab filters the render to the last 7 days', function () 
         ->call('latestDays');
 
     expect($component->get('selectedTab'))->toBe('days');
-    expect((float) $component->get('incomes'))->toBe(100.0);
+    expect((float) $component->viewData('incomes'))->toBe(100.0);
     $component->assertSee('within-7-days-window')
         ->assertDontSee('outside-7-days-window');
 });

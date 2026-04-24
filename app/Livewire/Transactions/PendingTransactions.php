@@ -5,17 +5,12 @@ namespace App\Livewire\Transactions;
 use App\Enums\TransactionState;
 use App\Enums\TransactionType;
 use App\Models\Transaction;
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class PendingTransactions extends Component
 {
     use WithPagination;
-
-    public Collection $receivables;
-
-    public Collection $payables;
 
     public string $selectedTab = 'all';
 
@@ -54,8 +49,8 @@ class PendingTransactions extends Component
             ->where('state', TransactionState::Pending)
             ->where('date', '<', now()->addMonth()->startOfMonth());
 
-        $this->receivables = (clone $query)->where('type', TransactionType::Income)->get();
-        $this->payables = (clone $query)->where('type', TransactionType::Expense)->get();
+        $receivables = (clone $query)->where('type', TransactionType::Income)->get();
+        $payables = (clone $query)->where('type', TransactionType::Expense)->get();
 
         $query = match ($this->selectedTab) {
             'all' => $query,
@@ -69,6 +64,6 @@ class PendingTransactions extends Component
             ->orderBy('updated_at', 'desc')
             ->paginate(12);
 
-        return view('livewire.transactions.pending-transactions', compact('transactions'));
+        return view('livewire.transactions.pending-transactions', compact('transactions', 'receivables', 'payables'));
     }
 }

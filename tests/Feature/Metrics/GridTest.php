@@ -57,8 +57,8 @@ test('marking transaction as paid sets expected_payment_date to null', function 
         ->call('changeStatus', $transaction->id);
 
     $this->assertDatabaseHas('transactions', [
-        'id'                    => $transaction->id,
-        'state'                 => 'paid',
+        'id' => $transaction->id,
+        'state' => 'paid',
         'expected_payment_date' => null,
     ]);
 });
@@ -73,25 +73,25 @@ test('grid totals only include the authenticated user transactions', function ()
         ->for($user)
         ->for(Category::factory()->for($user))
         ->create([
-            'type'   => 'income',
+            'type' => 'income',
             'amount' => 1000,
-            'state'  => 'paid',
-            'date'   => now(),
+            'state' => 'paid',
+            'date' => now(),
         ]);
 
     Transaction::factory()
         ->for($otherUser)
         ->for(Category::factory()->for($otherUser))
         ->create([
-            'type'   => 'income',
+            'type' => 'income',
             'amount' => 9999,
-            'state'  => 'paid',
-            'date'   => now(),
+            'state' => 'paid',
+            'date' => now(),
         ]);
 
     $component = Livewire::actingAs($user)->test(Grid::class);
 
-    expect((float) $component->get('total_income'))->toBe(1000.0);
+    expect((float) $component->viewData('total_income'))->toBe(1000.0);
 });
 
 test('grid pending transactions only include the authenticated user transactions', function () {
@@ -112,5 +112,5 @@ test('grid pending transactions only include the authenticated user transactions
 
     $component = Livewire::actingAs($user)->test(Grid::class);
 
-    expect($component->get('payable_transactions'))->toHaveCount(1);
+    expect($component->viewData('payable_transactions'))->toHaveCount(1);
 });

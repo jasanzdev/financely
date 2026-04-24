@@ -10,14 +10,6 @@ use Livewire\Component;
 
 class Grid extends Component
 {
-    public $total_income;
-
-    public $total_expense;
-
-    public $receivable_transactions;
-
-    public $payable_transactions;
-
     public $modalIsOpen = false;
 
     public $modalType = null;
@@ -52,8 +44,8 @@ class Grid extends Component
             ->orderBy('date')
             ->get();
 
-        $this->receivable_transactions = $allPending->where('type', TransactionType::Income);
-        $this->payable_transactions = $allPending->where('type', TransactionType::Expense);
+        $receivable_transactions = $allPending->where('type', TransactionType::Income);
+        $payable_transactions = $allPending->where('type', TransactionType::Expense);
 
         // Current-month paid totals — single query with conditional aggregation
         // instead of two separate sum() calls.
@@ -67,9 +59,14 @@ class Grid extends Component
             ')
             ->first();
 
-        $this->total_income = $totals->total_income ?? 0;
-        $this->total_expense = $totals->total_expense ?? 0;
+        $total_income = $totals->total_income ?? 0;
+        $total_expense = $totals->total_expense ?? 0;
 
-        return view('livewire.metrics.grid');
+        return view('livewire.metrics.grid', compact(
+            'total_income',
+            'total_expense',
+            'receivable_transactions',
+            'payable_transactions',
+        ));
     }
 }
