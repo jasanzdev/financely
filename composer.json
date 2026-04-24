@@ -1,11 +1,13 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/livewire-starter-kit",
+    "name": "jasanzdev/financely",
     "type": "project",
-    "description": "The official Laravel starter kit for Livewire.",
+    "description": "Financely — personal finance tracker built with Laravel and Livewire.",
     "keywords": [
         "laravel",
-        "framework"
+        "livewire",
+        "finance",
+        "pwa"
     ],
     "license": "MIT",
     "require": {
